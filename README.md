@@ -10,9 +10,13 @@
 
 ## Problem
 
-For a typical non-[SPA] website, how would you organize your JavaScript behaviors as you scale? You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.
+For a typical non-[SPA] website, it will eventually be apparent that there needs to be conventions enforced for consistency. While [styleguides][abnb] cover coding styles, conventions on namespacing and file structures are usually absent.
 
+[abnb]: https://github.com/airbnb/javascript
 [SPA]: https://en.wikipedia.org/wiki/Single-page_application
+
+##### The jQuery soup anti-pattern
+You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.
 
 ```html
 <script src='blogpost.js'></script>
@@ -31,21 +35,25 @@ $(function () {
 });
 ```
 
-This anti-pattern leads to many issues:
+##### What's wrong?
 
- * **Ambiguious sources:** If you need to edit the tooltip behavior later on, it's not obvious where to look first. Is the behavior attached to `.author`, `.footnote`, or `.profile-link`?
+This anti-pattern leads to many issues, which rsjs attempts to address.
 
- * **Non-reusable:** If you would like to reuse this behavior in a different page, it's not obvious how to do that either. Should `blogpost.js` be included in the other pages that need it? What if that file contains other behaviors you don't need for that page?
+ * **Ambiguious sources:** It's not obvious where to look for the JS behavior. (Is the handler attached to *.author*, *.footnote*, or *.profile-link*?)
 
- * **Lack of organization:** Without any imposed standard on where to place JS behaviors, making new behaviors gets confusing. Do you make a new `.js` file for each page? Do you add them to the global `application.js`? How do you load them?
+ * **Non-reusable:** It's not obvious how to reuse the behavior in another page. (Should *blogpost.js* be included in the other pages that need it? What if that file contains other behaviors you don't need for that page?)
 
-This styleguide assumes Rails conventions: that is, your final script builds are concatenated JavaScript files with no loaders like Browserify or RequireJS. You can adopt these guidelines to any other tech stack that follows this pattern.
+ * **Lack of organization:** Making new behaviors gets confusing. (Do you make a new `.js` file for each page? Do you add them to the global `application.js`? How do you load them?)
+
+##### About Rails
+
+This styleguide assumes Rails conventions of concatenating .js files. These don't apply to loaders like Browserify or RequireJS.
 
 <br>
 
 ## Structure
 
-### Think in component behaviors
+##### Think in component behaviors
 
 Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM.
 
@@ -69,9 +77,9 @@ $(document).on('hover', '[role~="animate-links"]', function () {
 });
 ```
 
-----
+<br>
 
-### One component per file
+##### One component per file
 
 Each file should a self-contained piece of code that only affects a *single* element type.
 
@@ -86,9 +94,9 @@ Keep them in your project's `behaviors/` path. Name these files according to the
         └── notification.js
 ```
 
-----
+<br>
 
-### Load components in all pages
+#### Load components in all pages
 
 Your main .js file should be a concatenation of all your `behaviors`.
 
@@ -99,11 +107,11 @@ You should be able to safely load all behaviors for all pages. Since your files'
 /*= require_tree ./behaviors
 ```
 
-----
+<br>
 
-### Prefer to use event delegation
+#### Prefer event delegation
 
-Instead of using `document.ready` to bind your events, consider using [jQuery event delegation][del] instead.
+*Optional:* Instead of using `document.ready` to bind your events, consider using [jQuery event delegation][del] instead.
 
 This allows you to bind behaviors to, say, modal windows, where the element may not be present when the document loads. There are cases wherein document.ready is necessary. If there's no other way to implement it, this should be fine.
 
@@ -123,9 +131,9 @@ $(document).on('hover', '[role~="collapsible-rows"]', function () {
 });
 ```
 
-----
+<br>
 
-### Use the role attribute
+#### Use the role attribute
 
 *Optional:* It's prefered to mark your component with a `role` attribute.
 
@@ -143,9 +151,9 @@ $('.user-info').on('hover', function() { ... });
 $('[role~="avatar-popup"]').on('hover', function() { ... });
 ```
 
-----
+<br>
 
-### Don't overload class names
+#### Don't overload class names
 
 If you don't like the `role` attribute and prefer classes, don't add styles to the classes that your JS uses. For instance, if you're styling a `.user-info` class, don't attach an event to it; instead, add another class name (eg, `.js-user-info`) to use in your JS.
 
@@ -168,9 +176,9 @@ $('.user-info').on('hover', function() { ... });
 $('.js-avatar-popup').on('hover', function() { ... });
 ```
 
-----
+<br>
 
-### Avoid side effects
+#### Avoid side effects
 
 Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page. This allows you to include all your behavior files in all parts of the site without fear that it might cause unintended behavior.
 
@@ -205,13 +213,11 @@ $(function () {
 });
 ```
 
-----
+<br>
 
 ## Third party libraries
 
-If you want to integrate 3rd-party scripts into your app, they can be considered as component behaviors as well. For instance, you integrate [select2.js] by affecting only `.js-select2` classes.
-
-For libraries that prescribe their own conventions (eg, [wow.js] affects `.wow` by default), make sure that your 3rd-party scripts also "think in components" as well. That is, it should have no side effects if their classes are not available in the page, and it should produce no conflicts with other components you may have on your site.
+If you want to integrate 3rd-party scripts into your app, consider them as component behaviors as well. For instance, you can integrate [select2.js] by affecting only `.js-select2` classes.
 
 [select2.js]: https://github.com/select2/select2
 [wow.js]: http://mynameismatthieu.com/WOW/
@@ -239,58 +245,71 @@ $(function () {
 })
 ```
 
-----
+<br>
 
-### Separate your vendor libs
+#### Separate your vendor libs
 
-Separate your 3rd-party libraries into something like `vendor.js`.
+Keep your 3rd-party libraries in something like `vendor.js`.
 
-Rails asks you to load by minify everything into `application.js` by default, including 3rd-party libraries. This is not favorable in the long term: your application code will eventually bloat, resulting in large files that will need to be re-cached on your next deployment.
+This will have browsers cache the 3rd-party libs separately so users won't need to re-fetch them on your next deployment.
 
-By separating your app and vendor code, you can have your 3rd-party libraries cached separately, without asking users to re-fetch them on your next deployment. It also makes it easier to create new app packages: should you need more than one `application.js` (eg, one for your public pages and another for private dashboards), they can share a common `vendor.js`.
+It also makes it easier to create new app packages should you need more than one (eg, one for your public pages and another for private dashboards).
 
 ```js
-/* bad */
+/* vendor.js */
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-// ...
-// (your actual app code here)
 ```
- 
+
 ```js
-/* better: separate them into ™ files */
-
-/* vendor.js */
-  //= require jquery
-  //= require jquery_ujs
-  //= require bootstrap
-
 /* application.js */
-  //= require_tree ./behaviors
+//= require_tree ./helpers
+//= require_tree ./behaviors
 ```
 
-----
+<br>
 
 ## Namespacing
 
-### Don't polute `window`
+Don't polute the global namespace.
 
-### Keep a consistent namespace
+<br>
 
-Put things in `window.App`.
+#### Use namespaces
 
-### Avoid naming your main namespace to your app name
+Place your publically-accessible classes and functions. Prefer to put them in an object, like `App`.
 
-If your app is `Flipstack`, don't name your namespace `window.Flipstack`. 
+```js
+if (!window.App) window.App = {};
 
-----
+App.Editor = function() {
+  // ...
+};
+```
+
+<br>
+
+#### Organize your helpers
+
+If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in `helpers/`.
+
+```js
+/* helpers/format_error.js */
+if (!window.Helpers) window.Helpers = {};
+
+Helpers.formatError = function (err) {
+  return "" + err.project_id + " error: " + err.message;
+};
+```
+
+<br>
 
 ## Turbolinks
 
 These are guidelines to make your JS structure more friendly to Turbolinks. They may still be of benefit even without Turbolinks, however.
 
-### Make document.ready calls idempotent
+#### Make document.ready calls idempotent
 
 Make sure your `$(function(){...})` handlers can be ran multiple times in a page without any side effects. This is great so you can use jQuery.turbolinks.
 
@@ -304,15 +323,15 @@ $(function () {
 });
 ```
 
-### Tag your event handlers
+#### Tag your event handlers
 
 Makes things neater, and allows you to trigger them later on.
 
-### Clean up if needed
+#### Clean up if needed
 
 Listen to `page:unload` to clean up anything to prepare the DOM for the next page.
 
----
+<br>
 
 ## Conclusion
 
@@ -324,6 +343,6 @@ The guidelines outlined here are not a one-size-fits-all approach. For one, it's
 
 As with every other guideline document out there, try out and find out what works for you and what doesn't, and adapt accordingly.
 
-### Further reading
+#### Further reading
 
 - [kossnocorp/role](https://github.com/kossnocorp/role#use-role-attribute-ftw)'s explanation on using the `role` attribute
