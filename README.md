@@ -268,7 +268,7 @@ By separating your app and vendor code, you can have your 3rd-party libraries ca
 
 ## Turbolinks
 
-These are guidelines to make your JS structure more friendly to Turbolinks. They may also be applicable even without Turbolinks.
+These are guidelines to make your JS structure more friendly to Turbolinks. They may still be of benefit even without Turbolinks, however.
 
 ### Make document.ready calls idempotent
 
@@ -282,6 +282,7 @@ $(function () {
     $(this).fizzle().data({ loaded: true });
   });
 });
+```
 
 ### Tag your event handlers
 
