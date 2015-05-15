@@ -45,13 +45,11 @@ This styleguide assumes Rails conventions: that is, your final script builds are
 
 ## Structure
 
-### Think in components
+### Think in component behaviors
 
-Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM. In this example, the JS component `animate-links` only affects a certain DOM subtree, and is placed on its own file.
+Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM. There files are "behaviors": code to describe dynamic JS behavior to affect a block of static HTML.
 
-This *doesn't* mean that you'll need to use [React.js], or any other library that will render your markup dynamically.
-
-[React.js]: http://facebook.github.io/react/
+In this example, the JS component `animate-links` only affects a certain DOM subtree, and is placed on its own file.
 
 ```html
 <div class='main-navbar' role='animate-links'>
@@ -75,7 +73,7 @@ $(document).on('hover', '[role~="animate-links"]', function () {
 
 ### One component per file
 
-Each file should a self-contained piece of code that only affects a *single* element type. Keep them in your project's `behaviors/` path.
+Each file should a self-contained piece of code that only affects a *single* element type. Keep them in your project's `behaviors/` path. Name these files according to the role ([see below](#usetheroleattribute)) or class names they affect.
 
 ```
 └── javascripts/
