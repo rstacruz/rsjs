@@ -49,6 +49,10 @@ This styleguide assumes Rails conventions: that is, your final script builds are
 
 Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM. In this example, the JS component `animate-links` only affects a certain DOM subtree, and is placed on its own file.
 
+This *doesn't* mean that you'll need to use [React.js], or any other library that will render your markup dynamically.
+
+[React.js]: http://facebook.github.io/react/
+
 ```html
 <div class='main-navbar' role='animate-links'>
   <a href='/'>Home</a>
