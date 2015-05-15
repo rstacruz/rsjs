@@ -23,7 +23,8 @@ You will typically see Rails projects with behaviors randomly attached to classe
 ```html
 <script src='blogpost.js'></script>
 <div class='author footnote'>
-  This article was written by <a class='profile-link' href="/user/rstacruz">Rico Sta. Cruz</a>.
+  This article was written by
+  <a class='profile-link' href="/user/rstacruz">Rico Sta. Cruz</a>.
 </div>
 ```
 
