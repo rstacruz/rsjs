@@ -15,7 +15,7 @@ For a typical non-[SPA] website, it will eventually be apparent that there needs
 [abnb]: https://github.com/airbnb/javascript
 [SPA]: https://en.wikipedia.org/wiki/Single-page_application
 
-##### The jQuery soup anti-pattern
+#### The jQuery soup anti-pattern
 You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.
 
 ```html
@@ -35,7 +35,7 @@ $(function () {
 });
 ```
 
-##### What's wrong?
+#### What's wrong?
 
 This anti-pattern leads to many issues, which rsjs attempts to address.
 
@@ -53,7 +53,7 @@ This styleguide assumes Rails conventions of concatenating .js files. These don'
 
 ## Structure
 
-##### Think in component behaviors
+#### Think in component behaviors
 
 Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM.
 
@@ -79,7 +79,7 @@ $(document).on('hover', '[role~="animate-links"]', function () {
 
 <br>
 
-##### One component per file
+#### One component per file
 
 Each file should a self-contained piece of code that only affects a *single* element type.
 
