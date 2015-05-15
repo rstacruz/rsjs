@@ -97,12 +97,15 @@ You should be able to safely load all behaviors for all pages. Since your files'
 
 ----
 
-### Prefer to use event delegation
+### Use event delegation if needed
 
 Instead of using `document.ready` to bind your events, consider using [jQuery event delegation][del] instead. This allows you to bind behaviors to, say, modal windows, where the element may not be present when the document loads.
 
+However, be aware that this can lead to performance issues: [more](http://stackoverflow.com/questions/12824549/should-all-jquery-events-be-bound-to-document)
+
 There are cases wherein document.ready is necessary. If there's no other way to implement it, this should be fine.
 
+[docdel]: http://stackoverflow.com/questions/12824549/should-all-jquery-events-be-bound-to-document
 [del]: http://learn.jquery.com/events/event-delegation/
 
 ```js
