@@ -15,6 +15,8 @@ For a typical non-[SPA] website, it will eventually be apparent that there needs
 [abnb]: https://github.com/airbnb/javascript
 [SPA]: https://en.wikipedia.org/wiki/Single-page_application
 
+<br>
+
 #### The jQuery soup anti-pattern
 You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.
 
@@ -34,6 +36,8 @@ $(function () {
   });
 });
 ```
+
+<br>
 
 #### What's wrong?
 
