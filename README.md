@@ -266,6 +266,33 @@ By separating your app and vendor code, you can have your 3rd-party libraries ca
 
 ----
 
+## Turbolinks
+
+These are guidelines to make your JS structure more friendly to Turbolinks. They may also be applicable even without Turbolinks.
+
+### Make document.ready calls idempotent
+
+Make sure your `$(function(){...})` handlers can be ran multiple times in a page without any side effects. This is great so you can use jQuery.turbolinks.
+
+```js
+$(function () {
+  $('[role~="fizzle"]').each(function () {
+    if ($(this).data('loaded')) return;
+    
+    $(this).fizzle().data({ loaded: true });
+  });
+});
+
+### Tag your event handlers
+
+Makes things neater, and allows you to trigger them later on.
+
+### Clean up if needed
+
+Listen to `page:unload` to clean up anything to prepare the DOM for the next page.
+
+---
+
 ## Conclusion
 
 This document is a result of my own trial-and-error across many projects, finding out what patterns are worth adhering to on the next project.
