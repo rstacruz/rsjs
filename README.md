@@ -64,10 +64,12 @@ This styleguide assumes Rails conventions of concatenating .js files. These don'
 
 Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM.
 
-There files are "behaviors": code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS component `animate-links` only affects a certain DOM subtree, and is placed on its own file.
+There files are "behaviors": code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS component `collapsible-nav` only affects a certain DOM subtree, and is placed on its own file.
 
 ```html
-<div class='main-navbar' role='animate-links'>
+<div class='main-navbar' role='collapsible-nav'>
+  <button class='expand' role='expand'>Expand</button>
+  
   <a href='/'>Home</a>
   <ul>
     <li><!-- links go here --></li>
@@ -76,11 +78,19 @@ There files are "behaviors": code to describe dynamic JS behavior to affect a bl
 ```
 
 ```js
-// behaviors/animate-links.js
-// shows links on hover
+// behaviors/collapsible-nav.js
 
-$(document).on('hover', '[role~="animate-links"]', function () {
-  $(this).addClass('-show-links');
+$(function () {
+  var $nav = $('[role~="collapsible-nav"]');
+  if (!$nav.length) return;
+  
+  $nav
+    .on('click', '[role~="expand"]', function () {
+      $nav.addClass('-expanded');
+    })
+    .on('mouseout', function () {
+      $nav.removeClass('-expanded');
+    });
 });
 ```
 
@@ -116,6 +126,28 @@ You should be able to safely load all behaviors for all pages. Since your files'
 
 <br>
 
+#### Use the role attribute
+
+*Optional:* It's prefered to mark your component with a `role` attribute.
+
+You can use ID's and classes, but this can lead to confusion because your class name now means 2 things, and it makes it difficult to re-style if need be.
+
+This applies too to elements inside the component, such as buttons (see collapsible-nav example).
+
+```html
+<!-- bad -->
+<div class='user-info'>...</div>
+$('.user-info').on('hover', function() { ... });
+```
+
+```html
+<!-- ok -->
+<div class='user-info' role='avatar-popup'>...</div>
+$('[role~="avatar-popup"]').on('hover', function() { ... });
+```
+
+<br>
+
 #### Prefer event delegation
 
 *Optional:* Instead of using `document.ready` to bind your events, consider using [jQuery event delegation][del] instead.
@@ -140,26 +172,6 @@ $(document).on('hover', '[role~="collapsible-rows"]', function () {
 
 <br>
 
-#### Use the role attribute
-
-*Optional:* It's prefered to mark your component with a `role` attribute.
-
-You can use ID's and classes, but this can lead to confusion because your class name now means 2 things, and it makes it difficult to re-style if need be.
-
-```html
-<!-- bad -->
-<div class='user-info'>...</div>
-$('.user-info').on('hover', function() { ... });
-```
-
-```html
-<!-- ok -->
-<div class='user-info' role='avatar-popup'>...</div>
-$('[role~="avatar-popup"]').on('hover', function() { ... });
-```
-
-<br>
-
 #### Don't overload class names
 
 If you don't like the `role` attribute and prefer classes, don't add styles to the classes that your JS uses. For instance, if you're styling a `.user-info` class, don't attach an event to it; instead, add another class name (eg, `.js-user-info`) to use in your JS.
@@ -171,7 +183,7 @@ This will also make it easier to restyle components as needed.
   is the JavaScript behavior attached to .user-info? or to .centered?
   This can be confusing developers unfamiliar with your code.
 -->
-<div class='user-info centered '>...</div>
+<div class='user-info centered'>...</div>
 $('.user-info').on('hover', function() { ... });
 ```
 
