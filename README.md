@@ -71,15 +71,12 @@ There files are "behaviors": code to describe dynamic JS behavior to affect a bl
   <button class='expand' role='expand'>Expand</button>
   
   <a href='/'>Home</a>
-  <ul>
-    <li><!-- links go here --></li>
-  </ul>
+  <ul>...</ul>
 </div>
 ```
 
 ```js
-// behaviors/collapsible-nav.js
-
+/* behaviors/collapsible-nav.js */
 $(function () {
   var $nav = $('[role~="collapsible-nav"]');
   if (!$nav.length) return;
@@ -128,11 +125,11 @@ You should be able to safely load all behaviors for all pages. Since your files'
 
 #### Use the role attribute
 
-*Optional:* It's prefered to mark your component with a `role` attribute.
+*Optional:* It's preferred to mark your component with a `role` attribute.
 
 You can use ID's and classes, but this can lead to confusion because your class name now means 2 things, and it makes it difficult to re-style if need be.
 
-This applies too to elements inside the component, such as buttons (see collapsible-nav example).
+This applies to elements inside the component too, such as buttons (see collapsible-nav example).
 
 ```html
 <!-- bad -->
@@ -159,14 +156,14 @@ This allows you to bind behaviors to, say, modal windows, where the element may 
 ```js
 /* bad */
 $(function () {
-  $('[role~="collapsible-rows"]').on('hover', function () {
+  $('[role~="sortable-table"]').on('hover', function () {
   });
 });
 ```
 
 ```js
 /* better */
-$(document).on('hover', '[role~="collapsible-rows"]', function () {
+$(document).on('hover', '[role~="sortable-table"]', function () {
 });
 ```
 
@@ -202,28 +199,18 @@ $('.js-avatar-popup').on('hover', function() { ... });
 Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page. This allows you to include all your behavior files in all parts of the site without fear that it might cause unintended behavior.
 
 ```js
-/* bad: can make scrolling sluggish on pages without .collapsible-nav */
+/* bad: can make scrolling sluggish on pages without hiding-nav */
 $('html, body').on('scroll', function () {
-  var $nav = $("[role~='collapsible-nav']");
+  var $nav = $("[role~='hiding-nav']");
   var isScrolled = $(window).scrollTop() > $nav.height;
   $nav.toggleClass('-hidden', !isScrolled);
 });
 ```
 
 ```js
-/* better: disable behavior when not around */
-$('html, body').on('scroll', function () {
-  var $nav = $("[role~='collapsible-nav']");
-  if (!$nav.length) return;
-  
-  // ...
-});
-```
-
-```js
-/* also better: don't bind the event when the element isn't present */
+/* better: don't bind the event when the element isn't present */
 $(function () {
-  var $nav = $("[role~='collapsible-nav']");
+  var $nav = $("[role~='hiding-nav']");
   if (!$nav.length) return;
   
   $('html, body').on('scroll', function () {
@@ -324,6 +311,8 @@ Helpers.formatError = function (err) {
 
 These are guidelines to make your JS structure more friendly to Turbolinks. They may still be of benefit even without Turbolinks, however.
 
+<br>
+
 #### Make document.ready calls idempotent
 
 Make sure your `$(function(){...})` handlers can be ran multiple times in a page without any side effects. This is great so you can use jQuery.turbolinks.
@@ -338,13 +327,26 @@ $(function () {
 });
 ```
 
+<br>
+
 #### Tag your event handlers
 
-Makes things neater, and allows you to trigger them later on.
+Makes things neater, and allows you to trigger them later on. This also makes it easy to unbind them.
+
+```js
+$('...').on('click.myevent', function () {
+});
+```
+
+<br>
 
 #### Clean up if needed
 
-Listen to `page:unload` to clean up anything to prepare the DOM for the next page.
+Listen to `page:change` (?) to clean up anything to prepare the DOM for the next page.
+
+```js
+...
+```
 
 <br>
 
