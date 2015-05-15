@@ -266,6 +266,8 @@ By separating your app and vendor code, you can have your 3rd-party libraries ca
 
 ## Conclusion
 
+This document is a result of my own trial-and-error across many projects, finding out what patterns are worth adhering to on the next project.
+
 The guidelines outlined here are not a one-size-fits-all approach. For one, it's not suited for [single page applications][SPA], or any other website relying on very heavy client-side behavior. It's written for the typical conventional web app in mind: a collection of HTML pages that occasionally need a bit of JavaScript to make things work.
 
 As with every other guideline document out there, try out and find out what works for you and what doesn't, and adapt accordingly.
