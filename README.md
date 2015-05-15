@@ -97,15 +97,12 @@ You should be able to safely load all behaviors for all pages. Since your files'
 
 ----
 
-### Use event delegation if needed
+### Prefer to use event delegation
 
 Instead of using `document.ready` to bind your events, consider using [jQuery event delegation][del] instead. This allows you to bind behaviors to, say, modal windows, where the element may not be present when the document loads.
 
-However, be aware that this can lead to performance issues: [more](http://stackoverflow.com/questions/12824549/should-all-jquery-events-be-bound-to-document)
-
 There are cases wherein document.ready is necessary. If there's no other way to implement it, this should be fine.
 
-[docdel]: http://stackoverflow.com/questions/12824549/should-all-jquery-events-be-bound-to-document
 [del]: http://learn.jquery.com/events/event-delegation/
 
 ```js
@@ -300,6 +297,12 @@ Listen to `page:unload` to clean up anything to prepare the DOM for the next pag
 
 This document is a result of my own trial-and-error across many projects, finding out what patterns are worth adhering to on the next project.
 
+This document prioritizes developer sanity first. This may mean that the approaches here is the one that'd have the best performance, especially given its preference for event delegations and running document.ready code for pages that don't need it. Regardless, the pros and cons were weighed and ultimately favored approaches that would be maintainable in the long run.
+
 The guidelines outlined here are not a one-size-fits-all approach. For one, it's not suited for [single page applications][SPA], or any other website relying on very heavy client-side behavior. It's written for the typical conventional web app in mind: a collection of HTML pages that occasionally need a bit of JavaScript to make things work.
 
 As with every other guideline document out there, try out and find out what works for you and what doesn't, and adapt accordingly.
+
+### Further reading
+
+- [kossnocorp/role](https://github.com/kossnocorp/role#use-role-attribute-ftw)'s explanation on using the `role` attribute
