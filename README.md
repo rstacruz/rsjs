@@ -172,18 +172,16 @@ $('[role~="avatar-popup"]').on('hover', function() { ... });
 
 ----
 
-### Don't overload classes
+### Don't overload class names
 
 If you don't like the `role` attribute and prefer classes, don't add styles to the classes that your JS uses. For instance, if you're styling a `.user-info` class, don't attach an event to it; instead, add another class name (eg, `.js-user-info`) to use in your JS.
-
-This will make it more straight-forward for other developers to figure out 
 
 This will also make it easier to restyle components as needed.
 
 ```html
 <!-- bad:
   is the JavaScript behavior attached to .user-info? or to .centered?
-  This can be confusing for new developers.
+  This can be confusing developers unfamiliar with your code.
 -->
 <div class='user-info centered '>...</div>
 $('.user-info').on('hover', function() { ... });
@@ -191,7 +189,7 @@ $('.user-info').on('hover', function() { ... });
 
 ```html
 <!-- better:
-  this makes it more apparent.
+  this makes it more obvious to find the source of the behavior.
 -->
 <div class='user-info js-avatar-popup'>...</div>
 $('.js-avatar-popup').on('hover', function() { ... });
@@ -261,3 +259,11 @@ By separating your app and vendor code, you can have your 3rd-party libraries ca
 /* application.js */
   //= require_tree ./behaviors
 ```
+
+----
+
+## Conclusion
+
+The guidelines outlined here are not a one-size-fits-all approach. For one, it's not suited for [single page applications][SPA], or any other website relying on very heavy client-side behavior. It's written for the typical conventional web app in mind: a collection of HTML pages that occasionally need a bit of JavaScript to make things work.
+
+As with every other guideline document out there, try out and find out what works for you and what doesn't, and adapt accordingly.
