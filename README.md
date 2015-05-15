@@ -69,43 +69,6 @@ $(document).on('hover', '[role~="animate-links"]', function () {
 
 ----
 
-### Avoid side effects
-
-Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page. This allows you to include all your behavior files in all parts of the site without fear that it might cause unintended behavior.
-
-```js
-/* bad: can make scrolling sluggish on pages without .collapsible-nav */
-$('html, body').on('scroll', function () {
-  var $nav = $("[role~='collapsible-nav']");
-  var isScrolled = $(window).scrollTop() > $nav.height;
-  $nav.toggleClass('-hidden', !isScrolled);
-});
-```
-
-```js
-/* better: disable behavior when not around */
-$('html, body').on('scroll', function () {
-  var $nav = $("[role~='collapsible-nav']");
-  if (!$nav.length) return;
-  
-  // ...
-});
-```
-
-```js
-/* also better: don't bind the event when the element isn't present */
-$(function () {
-  var $nav = $("[role~='collapsible-nav']");
-  if (!$nav.length) return;
-  
-  $('html, body').on('scroll', function () {
-    // ...
-  });
-});
-```
-
-----
-
 ### One component per file
 
 Each file should a self-contained piece of code that only affects a *single* element type. Keep them in your project's `behaviors/` path.
@@ -195,6 +158,43 @@ $('.user-info').on('hover', function() { ... });
 -->
 <div class='user-info js-avatar-popup'>...</div>
 $('.js-avatar-popup').on('hover', function() { ... });
+```
+
+----
+
+### Avoid side effects
+
+Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page. This allows you to include all your behavior files in all parts of the site without fear that it might cause unintended behavior.
+
+```js
+/* bad: can make scrolling sluggish on pages without .collapsible-nav */
+$('html, body').on('scroll', function () {
+  var $nav = $("[role~='collapsible-nav']");
+  var isScrolled = $(window).scrollTop() > $nav.height;
+  $nav.toggleClass('-hidden', !isScrolled);
+});
+```
+
+```js
+/* better: disable behavior when not around */
+$('html, body').on('scroll', function () {
+  var $nav = $("[role~='collapsible-nav']");
+  if (!$nav.length) return;
+  
+  // ...
+});
+```
+
+```js
+/* also better: don't bind the event when the element isn't present */
+$(function () {
+  var $nav = $("[role~='collapsible-nav']");
+  if (!$nav.length) return;
+  
+  $('html, body').on('scroll', function () {
+    // ...
+  });
+});
 ```
 
 ----
