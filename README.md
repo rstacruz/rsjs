@@ -50,7 +50,9 @@ This anti-pattern leads to many issues, which rsjs attempts to address.
 
  * **Lack of organization:** Making new behaviors gets confusing. (Do you make a new `.js` file for each page? Do you add them to the global `application.js`? How do you load them?)
 
-##### About Rails
+<br>
+
+#### About Rails
 
 This styleguide assumes Rails conventions of concatenating .js files. These don't apply to loaders like Browserify or RequireJS.
 
@@ -277,11 +279,7 @@ It also makes it easier to create new app packages should you need more than one
 
 ## Namespacing
 
-Don't polute the global namespace.
-
-<br>
-
-#### Use namespaces
+#### Don't pollute the global namespace
 
 Place your publically-accessible classes and functions. Prefer to put them in an object, like `App`.
 
