@@ -114,7 +114,9 @@ Keep them in your project's `behaviors/` path. Name these files according to the
 
 Your main .js file should be a concatenation of all your `behaviors`.
 
-You should be able to safely load all behaviors for all pages. Since your files's behaviors are localized to a certain "component", they will not have any effect unless the component it services is present the page. In Rails, this can be accomplished with `require_tree`.
+It should be safe to load all behaviors for all pages. Since your behaviors are localized to their respective components, they will not have any effect unless the element it applies to is on the page.
+
+In Rails, this can be accomplished with `require_tree`.
 
 ```js
 // js/application.js
@@ -127,9 +129,7 @@ You should be able to safely load all behaviors for all pages. Since your files'
 
 *Optional:* It's preferred to mark your component with a `role` attribute.
 
-You can use ID's and classes, but this can lead to confusion because your class name now means 2 things, and it makes it difficult to re-style if need be.
-
-This applies to elements inside the component too, such as buttons (see collapsible-nav example).
+You can use ID's and classes, but this can be confusing since it isn't obvious which class names are for styles and which have JS behaviors bound to them. This applies to elements inside the component too, such as buttons (see collapsible-nav example).
 
 ```html
 <!-- bad -->
@@ -154,7 +154,6 @@ This allows you to bind behaviors to, say, modal windows, where the element may 
 [del]: http://learn.jquery.com/events/event-delegation/
 
 ```js
-/* bad */
 $(function () {
   $('[role~="sortable-table"]').on('hover', function () {
   });
@@ -176,45 +175,40 @@ If you don't like the `role` attribute and prefer classes, don't add styles to t
 This will also make it easier to restyle components as needed.
 
 ```html
-<!-- bad:
-  is the JavaScript behavior attached to .user-info? or to .centered?
-  This can be confusing developers unfamiliar with your code.
+<!--
+Bad: is the JavaScript behavior attached to .user-info? or to
+.centered? This can be confusing developers unfamiliar with your code. 
 -->
-<div class='user-info centered'>...</div>
-$('.user-info').on('hover', function() { ... });
-```
+  <div class='user-info centered'>...</div>
+  $('.user-info').on('hover', function() { ... });
 
-```html
-<!-- better:
-  this makes it more obvious to find the source of the behavior.
+<!-- 
+Better: this makes it more obvious to find the source of
+the behavior.
 -->
-<div class='user-info js-avatar-popup'>...</div>
-$('.js-avatar-popup').on('hover', function() { ... });
+  <div class='user-info js-avatar-popup'>...</div>
+  $('.js-avatar-popup').on('hover', function() { ... });
 ```
 
 <br>
 
 #### Avoid side effects
 
-Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page. This allows you to include all your behavior files in all parts of the site without fear that it might cause unintended behavior.
+Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page.
 
 ```js
-/* bad: can make scrolling sluggish on pages without hiding-nav */
-$('html, body').on('scroll', function () {
-  var $nav = $("[role~='hiding-nav']");
-  var isScrolled = $(window).scrollTop() > $nav.height;
-  $nav.toggleClass('-hidden', !isScrolled);
-});
-```
-
-```js
-/* better: don't bind the event when the element isn't present */
 $(function () {
   var $nav = $("[role~='hiding-nav']");
+  
+  // Don't bind the `scroll` event handler if the element isn't present.
+  // This will avoid making the page sluggish unnecessarily. This also
+  // avoids the error that $nav[0] will be undefined.
   if (!$nav.length) return;
   
   $('html, body').on('scroll', function () {
-    // ...
+    if ($nav[0].disabled) return;
+    var isScrolled = $(window).scrollTop() > $nav.height();
+    $nav.toggleClass('-hidden', !isScrolled);
   });
 });
 ```
