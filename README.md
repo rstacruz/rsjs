@@ -272,9 +272,9 @@ It also makes it easier to create new app packages should you need more than one
 
 ## Namespacing
 
-#### Don't pollute the global namespace
+#### the Keep global namespace clean
 
-Place your publically-accessible classes and functions. Prefer to put them in an object, like `App`.
+Place your publically-accessible classes and functions in an object like `App`.
 
 ```js
 if (!window.App) window.App = {};
@@ -330,6 +330,9 @@ Makes things neater, and allows you to trigger them later on. This also makes it
 ```js
 $('...').on('click.myevent', function () {
 });
+
+/* later: */
+$('...').off('.myevent');
 ```
 
 <br>
@@ -339,7 +342,7 @@ $('...').on('click.myevent', function () {
 Listen to `page:change` (?) to clean up anything to prepare the DOM for the next page.
 
 ```js
-...
+... // can't think of an example, lol.
 ```
 
 <br>
