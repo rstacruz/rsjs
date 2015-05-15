@@ -47,9 +47,9 @@ This styleguide assumes Rails conventions: that is, your final script builds are
 
 ### Think in component behaviors
 
-Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM. There files are "behaviors": code to describe dynamic JS behavior to affect a block of static HTML.
+Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM.
 
-In this example, the JS component `animate-links` only affects a certain DOM subtree, and is placed on its own file.
+There files are "behaviors": code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS component `animate-links` only affects a certain DOM subtree, and is placed on its own file.
 
 ```html
 <div class='main-navbar' role='animate-links'>
@@ -73,7 +73,9 @@ $(document).on('hover', '[role~="animate-links"]', function () {
 
 ### One component per file
 
-Each file should a self-contained piece of code that only affects a *single* element type. Keep them in your project's `behaviors/` path. Name these files according to the role ([see below](#usetheroleattribute)) or class names they affect.
+Each file should a self-contained piece of code that only affects a *single* element type.
+
+Keep them in your project's `behaviors/` path. Name these files according to the roles ([see below](#usetheroleattribute)) or class names they affect.
 
 ```
 └── javascripts/
@@ -88,6 +90,8 @@ Each file should a self-contained piece of code that only affects a *single* ele
 
 ### Load components in all pages
 
+Your main .js file should be a concatenation of all your `behaviors`.
+
 You should be able to safely load all behaviors for all pages. Since your files's behaviors are localized to a certain "component", they will not have any effect unless the component it services is present the page. In Rails, this can be accomplished with `require_tree`.
 
 ```js
@@ -99,9 +103,9 @@ You should be able to safely load all behaviors for all pages. Since your files'
 
 ### Prefer to use event delegation
 
-Instead of using `document.ready` to bind your events, consider using [jQuery event delegation][del] instead. This allows you to bind behaviors to, say, modal windows, where the element may not be present when the document loads.
+Instead of using `document.ready` to bind your events, consider using [jQuery event delegation][del] instead.
 
-There are cases wherein document.ready is necessary. If there's no other way to implement it, this should be fine.
+This allows you to bind behaviors to, say, modal windows, where the element may not be present when the document loads. There are cases wherein document.ready is necessary. If there's no other way to implement it, this should be fine.
 
 [del]: http://learn.jquery.com/events/event-delegation/
 
@@ -123,7 +127,9 @@ $(document).on('hover', '[role~="collapsible-rows"]', function () {
 
 ### Use the role attribute
 
-*Optional:* It's prefered to mark your component with a `role` attribute. You can use ID's and classes, but this can lead to confusion because your class name now means 2 things, and it makes it difficult to re-style if need be.
+*Optional:* It's prefered to mark your component with a `role` attribute.
+
+You can use ID's and classes, but this can lead to confusion because your class name now means 2 things, and it makes it difficult to re-style if need be.
 
 ```html
 <!-- bad -->
@@ -266,6 +272,20 @@ By separating your app and vendor code, you can have your 3rd-party libraries ca
 
 ----
 
+## Namespacing
+
+### Don't polute `window`
+
+### Keep a consistent namespace
+
+Put things in `window.App`.
+
+### Avoid naming your main namespace to your app name
+
+If your app is `Flipstack`, don't name your namespace `window.Flipstack`. 
+
+----
+
 ## Turbolinks
 
 These are guidelines to make your JS structure more friendly to Turbolinks. They may still be of benefit even without Turbolinks, however.
@@ -298,7 +318,7 @@ Listen to `page:unload` to clean up anything to prepare the DOM for the next pag
 
 This document is a result of my own trial-and-error across many projects, finding out what patterns are worth adhering to on the next project.
 
-This document prioritizes developer sanity first. This may mean that the approaches here is the one that'd have the best performance, especially given its preference for event delegations and running document.ready code for pages that don't need it. Regardless, the pros and cons were weighed and ultimately favored approaches that would be maintainable in the long run.
+This document prioritizes developer sanity first. The approaches here may not have the most performant, especially given its preference for event delegations and running `document.ready` code for pages that don't need it. Regardless, the pros and cons were weighed and ultimately favored approaches that would be maintainable in the long run.
 
 The guidelines outlined here are not a one-size-fits-all approach. For one, it's not suited for [single page applications][SPA], or any other website relying on very heavy client-side behavior. It's written for the typical conventional web app in mind: a collection of HTML pages that occasionally need a bit of JavaScript to make things work.
 
