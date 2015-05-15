@@ -31,9 +31,11 @@ $(function () {
 
 This anti-pattern leads to many issues:
 
- * If you need to edit the tooltip behavior later on, it's not obvious where to look first. Is the behavior attached to `.author`, `.footnote`, or `.profile-link`?
- * If you would like to reuse this behavior in a different page, it's not obvious how to do that either. Should `blogpost.js` be included in the other pages that need it? What if that file contains other behaviors you don't need for that page?
- * Without any imposed standard on where to place JS behaviors, making new behaviors gets confusing. Do you make a new `.js` file for each page? Do you add them to the global `application.js`? How do you load them?
+ * **Ambiguious sources:** If you need to edit the tooltip behavior later on, it's not obvious where to look first. Is the behavior attached to `.author`, `.footnote`, or `.profile-link`?
+
+ * **Non-reusable:** If you would like to reuse this behavior in a different page, it's not obvious how to do that either. Should `blogpost.js` be included in the other pages that need it? What if that file contains other behaviors you don't need for that page?
+
+ * **Lack of organization:** Without any imposed standard on where to place JS behaviors, making new behaviors gets confusing. Do you make a new `.js` file for each page? Do you add them to the global `application.js`? How do you load them?
 
 This styleguide assumes Rails conventions: that is, your final script builds are concatenated JavaScript files with no loaders like Browserify or RequireJS. You can adopt these guidelines to any other tech stack that follows this pattern.
 
