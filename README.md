@@ -1,10 +1,8 @@
 # rsjs
 
-**Reasonable Standard\* for JavaScript Structure.**
+**Reasonable System for JavaScript Structure.**
 
 :construction: This document is a work in progress. Please feel free to contest any of the points raised here in [the issues](https://github.com/rstacruz/rsjs/issues). Also see [rscss](https://github.com/rstacruz/rscss), a document on CSS conventions that follows a similar line of thinking.
-
-(`*`: or **S** can also stand for "suggestions".)
 
 <br>
 
