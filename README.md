@@ -15,7 +15,7 @@ For a typical non-[SPA] website, it will eventually be apparent that there needs
 
 <br>
 
-## The jQuery soup anti-pattern
+### The jQuery soup anti-pattern
 You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.
 
 ```html
@@ -38,7 +38,7 @@ $(function () {
 
 <br>
 
-## What's wrong?
+### What's wrong?
 
 This anti-pattern leads to many issues, which rsjs attempts to address.
 
@@ -50,7 +50,7 @@ This anti-pattern leads to many issues, which rsjs attempts to address.
 
 <br>
 
-## About Rails
+### About Rails
 
 This styleguide assumes Rails conventions of concatenating .js files. These don't apply to loaders like Browserify or RequireJS.
 
@@ -58,7 +58,7 @@ This styleguide assumes Rails conventions of concatenating .js files. These don'
 
 ## Structure
 
-## Think in component behaviors
+### Think in component behaviors
 
 Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM.
 
@@ -91,7 +91,7 @@ $(function () {
 
 <br>
 
-## One component per file
+### One component per file
 
 Each file should a self-contained piece of code that only affects a *single* element type.
 
@@ -108,7 +108,7 @@ Keep them in your project's `behaviors/` path. Name these files according to the
 
 <br>
 
-## Load components in all pages
+### Load components in all pages
 
 Your main .js file should be a concatenation of all your `behaviors`.
 
@@ -123,7 +123,7 @@ In Rails, this can be accomplished with `require_tree`.
 
 <br>
 
-## Use the role attribute
+### Use the role attribute
 
 *Optional:* It's preferred to mark your component with a `role` attribute.
 
@@ -143,7 +143,7 @@ $('[role~="avatar-popup"]').on('hover', function() { ... });
 
 <br>
 
-## Don't overload class names
+### Don't overload class names
 
 If you don't like the `role` attribute and prefer classes, don't add styles to the classes that your JS uses. For instance, if you're styling a `.user-info` class, don't attach an event to it; instead, add another class name (eg, `.js-user-info`) to use in your JS.
 
@@ -169,7 +169,7 @@ the behavior.
 
 ## Namespacing
 
-## the Keep global namespace clean
+### Keep the global namespace clean
 
 Place your publically-accessible classes and functions in an object like `App`.
 
@@ -183,7 +183,7 @@ App.Editor = function() {
 
 <br>
 
-## Organize your helpers
+### Organize your helpers
 
 If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in `helpers/`.
 
@@ -204,11 +204,9 @@ These are conventions that can be handled by other libraries. For straight jQuer
 
 <br>
 
-## Use document.ready
+### Use document.ready
 
 Add your events and initialization code under the [document.ready] handler.
-
-[extras]: extras.md
 
 ```js
 $(function() {
@@ -220,7 +218,7 @@ $(function() {
 
 <br>
 
-## Use each() when needed
+### Use each() when needed
 
 When your behavior needs to either initialize first and/or keep a state, consider using [jQuery.each]. See [extras](extras.md#example-of-each) for a more detailed example.
 
@@ -368,3 +366,4 @@ As with every other guideline document out there, try out and find out what work
 
 [document.ready]: http://api.jquery.com/ready/
 [jQuery.each]: http://api.jquery.com/jQuery.each/
+[extras]: extras.md
