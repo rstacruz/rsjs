@@ -30,7 +30,7 @@ You will typically see Rails projects with behaviors randomly attached to classe
 $(function () {
   $('.author a').on('hover', function () {
     var username = $(this).attr('href');
-    
+
     showTooltipProfile(username, { below: $(this) });
   });
 });
@@ -67,7 +67,7 @@ There files are "behaviors": code to describe dynamic JS behavior to affect a bl
 ```html
 <div class='main-navbar' role='collapsible-nav'>
   <button class='expand' role='expand'>Expand</button>
-  
+
   <a href='/'>Home</a>
   <ul>...</ul>
 </div>
@@ -78,7 +78,7 @@ There files are "behaviors": code to describe dynamic JS behavior to affect a bl
 $(function () {
   var $nav = $('[role~="collapsible-nav"]');
   if (!$nav.length) return;
-  
+
   $nav
     .on('click', '[role~="expand"]', function () {
       $nav.addClass('-expanded');
@@ -175,12 +175,12 @@ This will also make it easier to restyle components as needed.
 ```html
 <!--
 Bad: is the JavaScript behavior attached to .user-info? or to
-.centered? This can be confusing developers unfamiliar with your code. 
+.centered? This can be confusing developers unfamiliar with your code.
 -->
   <div class='user-info centered'>...</div>
   $('.user-info').on('hover', function() { ... });
 
-<!-- 
+<!--
 Better: this makes it more obvious to find the source of
 the behavior.
 -->
@@ -197,12 +197,12 @@ Make sure that each of your JavaScript files will not throw errors or have side 
 ```js
 $(function () {
   var $nav = $("[role~='hiding-nav']");
-  
+
   // Don't bind the `scroll` event handler if the element isn't present.
   // This will avoid making the page sluggish unnecessarily. This also
   // avoids the error that $nav[0] will be undefined.
   if (!$nav.length) return;
-  
+
   $('html, body').on('scroll', function () {
     if ($nav[0].disabled) return;
     var isScrolled = $(window).scrollTop() > $nav.height();
@@ -313,7 +313,7 @@ Make sure your `$(function(){...})` handlers can be ran multiple times in a page
 $(function () {
   $('[role~="fizzle"]').each(function () {
     if ($(this).data('loaded')) return;
-    
+
     $(this).fizzle().data({ loaded: true });
   });
 });
