@@ -15,7 +15,7 @@ For a typical non-[SPA] website, it will eventually be apparent that there needs
 
 <br>
 
-#### The jQuery soup anti-pattern
+## The jQuery soup anti-pattern
 You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.
 
 ```html
@@ -38,7 +38,7 @@ $(function () {
 
 <br>
 
-#### What's wrong?
+## What's wrong?
 
 This anti-pattern leads to many issues, which rsjs attempts to address.
 
@@ -50,7 +50,7 @@ This anti-pattern leads to many issues, which rsjs attempts to address.
 
 <br>
 
-#### About Rails
+## About Rails
 
 This styleguide assumes Rails conventions of concatenating .js files. These don't apply to loaders like Browserify or RequireJS.
 
@@ -58,7 +58,7 @@ This styleguide assumes Rails conventions of concatenating .js files. These don'
 
 ## Structure
 
-#### Think in component behaviors
+## Think in component behaviors
 
 Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM.
 
@@ -91,7 +91,7 @@ $(function () {
 
 <br>
 
-#### One component per file
+## One component per file
 
 Each file should a self-contained piece of code that only affects a *single* element type.
 
@@ -108,7 +108,7 @@ Keep them in your project's `behaviors/` path. Name these files according to the
 
 <br>
 
-#### Load components in all pages
+## Load components in all pages
 
 Your main .js file should be a concatenation of all your `behaviors`.
 
@@ -123,7 +123,7 @@ In Rails, this can be accomplished with `require_tree`.
 
 <br>
 
-#### Use the role attribute
+## Use the role attribute
 
 *Optional:* It's preferred to mark your component with a `role` attribute.
 
@@ -143,30 +143,7 @@ $('[role~="avatar-popup"]').on('hover', function() { ... });
 
 <br>
 
-#### Prefer event delegation
-
-*Optional:* Instead of using `document.ready` to bind your events, consider using [jQuery event delegation][del] instead.
-
-This allows you to bind behaviors to, say, modal windows, where the element may not be present when the document loads. There are cases wherein document.ready is necessary. If there's no other way to implement it, this should be fine.
-
-[del]: http://learn.jquery.com/events/event-delegation/
-
-```js
-$(function () {
-  $('[role~="sortable-table"]').on('hover', function () {
-  });
-});
-```
-
-```js
-/* better */
-$(document).on('hover', '[role~="sortable-table"]', function () {
-});
-```
-
-<br>
-
-#### Don't overload class names
+## Don't overload class names
 
 If you don't like the `role` attribute and prefer classes, don't add styles to the classes that your JS uses. For instance, if you're styling a `.user-info` class, don't attach an event to it; instead, add another class name (eg, `.js-user-info`) to use in your JS.
 
@@ -190,7 +167,79 @@ the behavior.
 
 <br>
 
-#### Avoid side effects
+## Namespacing
+
+## the Keep global namespace clean
+
+Place your publically-accessible classes and functions in an object like `App`.
+
+```js
+if (!window.App) window.App = {};
+
+App.Editor = function() {
+  // ...
+};
+```
+
+<br>
+
+## Organize your helpers
+
+If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in `helpers/`.
+
+```js
+/* helpers/format_error.js */
+if (!window.Helpers) window.Helpers = {};
+
+Helpers.formatError = function (err) {
+  return "" + err.project_id + " error: " + err.message;
+};
+```
+
+<br>
+
+## Writing code
+
+These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.
+
+<br>
+
+## Use document.ready
+
+Add your events and initialization code under the [document.ready] handler.
+
+[extras]: extras.md
+
+```js
+$(function() {
+  $('[role~="expanding-menu"]').on('hover', function () {
+    // ...
+  });
+});
+```
+
+<br>
+
+## Use each() when needed
+
+When your behavior needs to either initialize first and/or keep a state, consider using [jQuery.each]. See [extras](extras.md#example-of-each) for a more detailed example.
+
+```js
+$(function() {
+  $('[role~="expanding-menu"]').each(function() {
+    var $menu = $(this);
+    var state = {};
+    
+    // - do some initialization code on $menu
+    // - bind events to $menu
+    // - use `state` to manage state
+  })
+})
+```
+
+<br>
+
+### Avoid side effects
 
 Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page.
 
@@ -212,6 +261,41 @@ $(function () {
 ```
 
 <br>
+
+### Dynamic content
+
+There are times when you may wish to apply behaviors to content that may appear on the page later on. This is the case for AJAX-loaded content such as modal dialogs.
+
+In this case, wrap your initialization code in a function, and run that function on document.ready and when the DOM changes (eg, `show.bs.modal` in the case of Bootstrap modal dialogs).
+
+Since your initializer may be called multiple times in a page, you will need to make them [idempotent] by bypassing elements that it has already been applied to. This can be done with an [include guard] pattern.
+
+An alternative to this would be event delegation: see [extras](extras.md#event-delegation) for more info.
+
+[idempotent]: https://en.wikipedia.org/wiki/Idempotent
+[include guard]: http://en.wikipedia.org/wiki/Include_guard
+
+```js
+;(function() {
+function init() {
+  $('[role~="key-value-pair"]').each(function () {
+    var $parent = $(this);
+    
+    // an include guard to keep it idempotent
+    if ($parent.data('key-value-pair-loaded')) return;
+    $parent.data('key-value-pair-loaded', true);
+    
+    // init code here
+  })
+}
+
+$(init);
+$(document).on('show.bs.modal', init);
+})();
+```
+
+<br>
+
 
 ## Third party libraries
 
@@ -245,7 +329,7 @@ $(function () {
 
 <br>
 
-#### Separate your vendor libs
+### Separate your vendor libs
 
 Keep your 3rd-party libraries in something like `vendor.js`.
 
@@ -268,83 +352,6 @@ It also makes it easier to create new app packages should you need more than one
 
 <br>
 
-## Namespacing
-
-#### the Keep global namespace clean
-
-Place your publically-accessible classes and functions in an object like `App`.
-
-```js
-if (!window.App) window.App = {};
-
-App.Editor = function() {
-  // ...
-};
-```
-
-<br>
-
-#### Organize your helpers
-
-If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in `helpers/`.
-
-```js
-/* helpers/format_error.js */
-if (!window.Helpers) window.Helpers = {};
-
-Helpers.formatError = function (err) {
-  return "" + err.project_id + " error: " + err.message;
-};
-```
-
-<br>
-
-## Turbolinks
-
-These are guidelines to make your JS structure more friendly to Turbolinks. They may still be of benefit even without Turbolinks, however.
-
-<br>
-
-#### Make document.ready calls idempotent
-
-Make sure your `$(function(){...})` handlers can be ran multiple times in a page without any side effects. This is great so you can use jQuery.turbolinks.
-
-```js
-$(function () {
-  $('[role~="fizzle"]').each(function () {
-    if ($(this).data('loaded')) return;
-
-    $(this).fizzle().data({ loaded: true });
-  });
-});
-```
-
-<br>
-
-#### Tag your event handlers
-
-Makes things neater, and allows you to trigger them later on. This also makes it easy to unbind them.
-
-```js
-$('...').on('click.myevent', function () {
-});
-
-/* later: */
-$('...').off('.myevent');
-```
-
-<br>
-
-#### Clean up if needed
-
-Listen to `page:change` (?) to clean up anything to prepare the DOM for the next page.
-
-```js
-... // can't think of an example, lol.
-```
-
-<br>
-
 ## Conclusion
 
 This document is a result of my own trial-and-error across many projects, finding out what patterns are worth adhering to on the next project.
@@ -355,6 +362,9 @@ The guidelines outlined here are not a one-size-fits-all approach. For one, it's
 
 As with every other guideline document out there, try out and find out what works for you and what doesn't, and adapt accordingly.
 
-#### Further reading
+## Further reading
 
 - [kossnocorp/role](https://github.com/kossnocorp/role#use-role-attribute-ftw)'s explanation on using the `role` attribute
+
+[document.ready]: http://api.jquery.com/ready/
+[jQuery.each]: http://api.jquery.com/jQuery.each/
