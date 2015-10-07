@@ -222,6 +222,8 @@ $(function() {
 
 When your behavior needs to either initialize first and/or keep a state, consider using [jQuery.each]. See [extras](extras.md#example-of-each) for a more detailed example.
 
+If you are using [onmount], this is not necessary.
+
 ```js
 $(function() {
   $('[role~="expanding-menu"]').each(function() {
@@ -231,6 +233,20 @@ $(function() {
     // - do some initialization code on $menu
     // - bind events to $menu
     // - use `state` to manage state
+  })
+})
+```
+
+<br>
+
+### Consider using onmount
+
+[onmount] is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it'd allow you to write better unit tests.
+
+```js
+$.onmount('.js-push-button', function () {
+  $(this).on('click', function () {
+    alert('working...')
   })
 })
 ```
@@ -367,3 +383,4 @@ As with every other guideline document out there, try out and find out what work
 [document.ready]: http://api.jquery.com/ready/
 [jQuery.each]: http://api.jquery.com/jQuery.each/
 [extras]: extras.md
+[onmount]: https://github.com/rstacruz/onmount
