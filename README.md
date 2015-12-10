@@ -1,10 +1,10 @@
 # rsjs
 
-**Reasonable System for JavaScript Structure.**
+<!-- {h1:.massive-header.-with-tagline} -->
+
+> Reasonable System for JavaScript Structure
 
 :construction: This document is a work in progress. Please feel free to contest any of the points raised here in [the issues](https://github.com/rstacruz/rsjs/issues). Also see [rscss](https://github.com/rstacruz/rscss), a document on CSS conventions that follows a similar line of thinking.
-
-<br>
 
 ## Problem
 
@@ -12,8 +12,6 @@ For a typical non-[SPA] website, it will eventually be apparent that there needs
 
 [abnb]: https://github.com/airbnb/javascript
 [SPA]: https://en.wikipedia.org/wiki/Single-page_application
-
-<br>
 
 ### The jQuery soup anti-pattern
 You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.
@@ -36,8 +34,6 @@ $(function () {
 });
 ```
 
-<br>
-
 ### What's wrong?
 
 This anti-pattern leads to many issues, which rsjs attempts to address.
@@ -48,13 +44,9 @@ This anti-pattern leads to many issues, which rsjs attempts to address.
 
  * **Lack of organization:** Making new behaviors gets confusing. (Do you make a new `.js` file for each page? Do you add them to the global `application.js`? How do you load them?)
 
-<br>
-
 ### About Rails
 
 This styleguide assumes Rails conventions of concatenating .js files. These don't apply to loaders like Browserify or RequireJS.
-
-<br>
 
 ## Structure
 
@@ -89,8 +81,6 @@ $(function () {
 });
 ```
 
-<br>
-
 ### One component per file
 
 Each file should a self-contained piece of code that only affects a *single* element type.
@@ -106,8 +96,6 @@ Keep them in your project's `behaviors/` path. Name these files according to the
         └── notification.js
 ```
 
-<br>
-
 ### Load components in all pages
 
 Your main .js file should be a concatenation of all your `behaviors`.
@@ -120,8 +108,6 @@ In Rails, this can be accomplished with `require_tree`.
 // js/application.js
 /*= require_tree ./behaviors
 ```
-
-<br>
 
 ### Use the role attribute
 
@@ -140,8 +126,6 @@ $('.user-info').on('hover', function() { ... });
 <div class='user-info' role='avatar-popup'>...</div>
 $('[role~="avatar-popup"]').on('hover', function() { ... });
 ```
-
-<br>
 
 ### Don't overload class names
 
@@ -165,8 +149,6 @@ the behavior.
   $('.js-avatar-popup').on('hover', function() { ... });
 ```
 
-<br>
-
 ## Namespacing
 
 ### Keep the global namespace clean
@@ -181,8 +163,6 @@ App.Editor = function() {
 };
 ```
 
-<br>
-
 ### Organize your helpers
 
 If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in `helpers/`.
@@ -196,13 +176,9 @@ Helpers.formatError = function (err) {
 };
 ```
 
-<br>
-
 ## Writing code
 
 These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.
-
-<br>
 
 ### Use document.ready
 
@@ -224,8 +200,6 @@ $(document).on('click', '[role~=".bar"]', function () {
 });
 ```
 
-<br>
-
 ### Use each() when needed
 
 When your behavior needs to either initialize first and/or keep a state, consider using [jQuery.each]. See [extras](extras.md#example-of-each) for a more detailed example.
@@ -245,8 +219,6 @@ $(function() {
 })
 ```
 
-<br>
-
 ### Consider using onmount
 
 [onmount] is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it'd allow you to write better unit tests.
@@ -258,8 +230,6 @@ $.onmount('.js-push-button', function () {
   })
 })
 ```
-
-<br>
 
 ### Avoid side effects
 
@@ -281,8 +251,6 @@ $(function () {
   });
 });
 ```
-
-<br>
 
 ### Dynamic content
 
@@ -316,8 +284,6 @@ $(document).on('show.bs.modal', init);
 })();
 ```
 
-<br>
-
 
 ## Third party libraries
 
@@ -349,8 +315,6 @@ $(function () {
 })
 ```
 
-<br>
-
 ### Separate your vendor libs
 
 Keep your 3rd-party libraries in something like `vendor.js`.
@@ -371,8 +335,6 @@ It also makes it easier to create new app packages should you need more than one
 //= require_tree ./helpers
 //= require_tree ./behaviors
 ```
-
-<br>
 
 ## Conclusion
 
