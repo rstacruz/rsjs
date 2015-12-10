@@ -216,6 +216,14 @@ $(function() {
 });
 ```
 
+The only time document.ready is not necessary is when attaching event delegations to `document`. These are typically best done _before_ DOM ready, which would allow them to work even when the entire document hasn't loaded completely.
+
+```js
+$(document).on('click', '[role~=".bar"]', function () {
+  // ...
+});
+```
+
 <br>
 
 ### Use each() when needed
