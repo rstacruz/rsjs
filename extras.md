@@ -1,3 +1,7 @@
+# Extras
+
+These are guidelines that did not make it to the main document.
+
 ## Events
 
 #### Example of each()
@@ -58,22 +62,6 @@ $(document).on('hover', '[role~="sortable-table"]', function () {
 ## Turbolinks
 
 These are guidelines to make your JS structure more friendly to Turbolinks. They may still be of benefit even without Turbolinks, however.
-
-<br>
-
-#### Make document.ready calls idempotent
-
-Make sure your `$(function(){...})` handlers can be ran multiple times in a page without any side effects. This is great so you can use jQuery.turbolinks.
-
-```js
-$(function () {
-  $('[role~="fizzle"]').each(function () {
-    if ($(this).data('loaded')) return;
-
-    $(this).fizzle().data({ loaded: true });
-  });
-});
-```
 
 <br>
 
