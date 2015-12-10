@@ -211,7 +211,7 @@ $(function() {
   $('[role~="expanding-menu"]').each(function() {
     var $menu = $(this);
     var state = {};
-    
+
     // - do some initialization code on $menu
     // - bind events to $menu
     // - use `state` to manage state
@@ -270,11 +270,11 @@ An alternative to this would be event delegation: see [extras](extras.md#event-d
 function init() {
   $('[role~="key-value-pair"]').each(function () {
     var $parent = $(this);
-    
+
     // an include guard to keep it idempotent
     if ($parent.data('key-value-pair-loaded')) return;
     $parent.data('key-value-pair-loaded', true);
-    
+
     // init code here
   })
 }
@@ -335,6 +335,39 @@ It also makes it easier to create new app packages should you need more than one
 //= require_tree ./helpers
 //= require_tree ./behaviors
 ```
+
+### Load 3rd-party resources asynchronously
+
+For third-party resources that are loaded externally, consider loading them with an asynchronous loading mechanism such as [script.js].
+
+Some 3rd party libraries are loaded via `<script>` tags, such as Google Maps's API. These vendors typically expect you to embed them, like so:
+
+```html
+<script src='//maps.google.com/maps/api/js?v=3.1.3&libraries=geometry'></script>
+```
+
+If your website doesn't use them everywhere, it'd be wasteful to include them everywhere. Instead, consider using [script.js] wrapped in a helper function to load them on an as-needed basis.
+
+```js
+function useGoogleMaps (fn) {
+  var url = '//maps.google.com/maps/api/js?v=3.1.3&libraries=geometry'
+
+  $script(url, function () {
+    // pass the global `gmaps` variable to the callback function.
+    fn(window.gmaps)
+  })
+}
+```
+
+This helper can be used like so:
+
+```js
+useGoogleMaps(function (gmaps) {
+  // use `gmaps` here
+})
+```
+
+[script.js]: https://github.com/ded/script.js/
 
 ## Conclusion
 
