@@ -120,6 +120,11 @@
                 "title": "Separate your vendor libs",
                 "depth": 3,
                 "id": "separate-your-vendor-libs"
+              },
+              {
+                "title": "Load 3rd-party resources asynchronously",
+                "depth": 3,
+                "id": "load-3rd-party-resources-asynchronously"
               }
             ]
           },
@@ -273,6 +278,11 @@
               "title": "Separate your vendor libs",
               "depth": 3,
               "id": "separate-your-vendor-libs"
+            },
+            {
+              "title": "Load 3rd-party resources asynchronously",
+              "depth": 3,
+              "id": "load-3rd-party-resources-asynchronously"
             }
           ]
         },
