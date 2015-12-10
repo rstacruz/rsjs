@@ -167,7 +167,7 @@ $.onmount('.js-push-button', function () {
 
 ### Use document.ready
 
-Add your events and initialization code under the [document.ready] handler.
+Add your events and initialization code under the [document.ready] handler. This assures you that the element you're binding behaviors to already exists. (There is an exception to this--see the next section).
 
 ```js
 $(function() {
@@ -177,13 +177,21 @@ $(function() {
 });
 ```
 
+### Use event delegation
+
 The only time document.ready is not necessary is when attaching event delegations to `document`. These are typically best done _before_ DOM ready, which would allow them to work even when the entire document hasn't loaded completely.
+
+This allows you to listen for those events whether the element is on the page or not, unlike doing `$('[role~="menu"]').on(...)` which needs to be done when the element is on the page.
 
 ```js
 $(document).on('click', '[role~=".bar"]', function () {
   // ...
 });
 ```
+
+However, this technique comes at a runtime performance cost. If you bind events for `click` for 50 components, every click on the page will check for 50 possible event handlers. Instead, consider using [onmount] and bind your events directly to elements as needed.
+
+Also see [extras](extras.md#event-delegation) for more info on event delegation.
 
 ### Use each() when needed
 
@@ -229,11 +237,15 @@ $(function () {
 
 There are times when you may wish to apply behaviors to content that may appear on the page later on. This is the case for AJAX-loaded content such as modal dialogs.
 
-In this case, wrap your initialization code in a function, and run that function on document.ready and when the DOM changes (eg, `show.bs.modal` in the case of Bootstrap modal dialogs).
+You can do three approaches for this:
+
+* Use [onmount] _(recommended)_. This is the easiest and most scalable solution.
+* Use [event delegation](#use-event-delegation) on `document`. This only works if you're only binding events.
+* Wrap your initialization code in a function and run in when the modal appears (described below).
+
+If you're not using [onmount] or event delegation, you can wrap your initialization code in a function. Run that function on document.ready and when the DOM changes (eg, `show.bs.modal` in the case of Bootstrap modal dialogs).
 
 Since your initializer may be called multiple times in a page, you will need to make them [idempotent] by bypassing elements that it has already been applied to. This can be done with an [include guard] pattern.
-
-An alternative to this would be event delegation: see [extras](extras.md#event-delegation) for more info.
 
 [idempotent]: https://en.wikipedia.org/wiki/Idempotent
 [include guard]: http://en.wikipedia.org/wiki/Include_guard
