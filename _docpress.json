@@ -78,6 +78,11 @@
                 "id": "use-document.ready"
               },
               {
+                "title": "Use event delegation",
+                "depth": 3,
+                "id": "use-event-delegation"
+              },
+              {
                 "title": "Use each() when needed",
                 "depth": 3,
                 "id": "use-each()-when-needed"
@@ -234,6 +239,11 @@
               "title": "Use document.ready",
               "depth": 3,
               "id": "use-document.ready"
+            },
+            {
+              "title": "Use event delegation",
+              "depth": 3,
+              "id": "use-event-delegation"
             },
             {
               "title": "Use each() when needed",

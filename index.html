@@ -142,18 +142,22 @@ the behavior.
 })
 </code></pre>
 <h3 id="use-document.ready">Use document.ready</h3>
-<p>Add your events and initialization code under the <a href="http://api.jquery.com/ready/">document.ready</a> handler.</p>
+<p>Add your events and initialization code under the <a href="http://api.jquery.com/ready/">document.ready</a> handler. This assures you that the element you&#x2019;re binding behaviors to already exists. (There is an exception to this&#x2013;see the next section).</p>
 <pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
   $(<span class="pl-s">&apos;[role~=&quot;expanding-menu&quot;]&apos;</span>).on(<span class="pl-s">&apos;hover&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
     <span class="pl-c">// ...</span>
   });
 });
 </code></pre>
+<h3 id="use-event-delegation">Use event delegation</h3>
 <p>The only time document.ready is not necessary is when attaching event delegations to <code>document</code>. These are typically best done <em>before</em> DOM ready, which would allow them to work even when the entire document hasn&#x2019;t loaded completely.</p>
+<p>This allows you to listen for those events whether the element is on the page or not, unlike doing <code>$(&apos;[role~=&quot;menu&quot;]&apos;).on(...)</code> which needs to be done when the element is on the page.</p>
 <pre><code class="lang-js">$(<span class="pl-c1">document</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="pl-s">&apos;[role~=&quot;.bar&quot;]&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
   <span class="pl-c">// ...</span>
 });
 </code></pre>
+<p>However, this technique comes at a runtime performance cost. If you bind events for <code>click</code> for 50 components, every click on the page will check for 50 possible event handlers. Instead, consider using <a href="https://github.com/rstacruz/onmount">onmount</a> and bind your events directly to elements as needed.</p>
+<p>Also see <a href="extras.html#event-delegation">extras</a> for more info on event delegation.</p>
 <h3 id="use-each()-when-needed">Use each() when needed</h3>
 <p>When your behavior needs to either initialize first and/or keep a state, consider using <a href="http://api.jquery.com/jQuery.each/">jQuery.each</a>. See <a href="extras.html#example-of-each">extras</a> for a more detailed example.</p>
 <p>If you are using <a href="https://github.com/rstacruz/onmount">onmount</a>, this is not necessary.</p>
@@ -187,9 +191,14 @@ the behavior.
 </code></pre>
 <h3 id="dynamic-content">Dynamic content</h3>
 <p>There are times when you may wish to apply behaviors to content that may appear on the page later on. This is the case for AJAX-loaded content such as modal dialogs.</p>
-<p>In this case, wrap your initialization code in a function, and run that function on document.ready and when the DOM changes (eg, <code>show.bs.modal</code> in the case of Bootstrap modal dialogs).</p>
+<p>You can do three approaches for this:</p>
+<ul>
+<li>Use <a href="https://github.com/rstacruz/onmount">onmount</a> <em>(recommended)</em>. This is the easiest and most scalable solution.</li>
+<li>Use <a href="#use-event-delegation">event delegation</a> on <code>document</code>. This only works if you&#x2019;re only binding events.</li>
+<li>Wrap your initialization code in a function and run in when the modal appears (described below).</li>
+</ul>
+<p>If you&#x2019;re not using <a href="https://github.com/rstacruz/onmount">onmount</a> or event delegation, you can wrap your initialization code in a function. Run that function on document.ready and when the DOM changes (eg, <code>show.bs.modal</code> in the case of Bootstrap modal dialogs).</p>
 <p>Since your initializer may be called multiple times in a page, you will need to make them <a href="https://en.wikipedia.org/wiki/Idempotent">idempotent</a> by bypassing elements that it has already been applied to. This can be done with an <a href="http://en.wikipedia.org/wiki/Include_guard">include guard</a> pattern.</p>
-<p>An alternative to this would be event delegation: see <a href="extras.html#event-delegation">extras</a> for more info.</p>
 <pre><code class="lang-js">;(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
 <span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">init</span>(<span class="hljs-params"></span>) </span>{
   $(<span class="pl-s">&apos;[role~=&quot;key-value-pair&quot;]&apos;</span>).each(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
@@ -329,6 +338,8 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
                 <li class="menu-item -level-2"><a href="#consider-using-onmount" class="link title link-consider-using-onmount">Consider using onmount</a>
                 </li>
                 <li class="menu-item -level-2"><a href="#use-document.ready" class="link title link-use-document.ready">Use document.ready</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#use-event-delegation" class="link title link-use-event-delegation">Use event delegation</a>
                 </li>
                 <li class="menu-item -level-2"><a href="#use-each()-when-needed" class="link title link-use-each()-when-needed">Use each() when needed</a>
                 </li>
