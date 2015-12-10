@@ -141,6 +141,8 @@ the behavior.
   })
 })
 </code></pre>
+<h2 id="writing-code-without-onmount">Writing code without onmount</h2>
+<p>The <a href="https://github.com/rstacruz/onmount">onmount</a> library solves many pitfalls when writing component behaviors. If you choose not to use it, however, be prepared to deal with those caveats on your own. This next section describes these cases in detail.</p>
 <h3 id="use-document.ready">Use document.ready</h3>
 <p>Add your events and initialization code under the <a href="http://api.jquery.com/ready/">document.ready</a> handler. This assures you that the element you&#x2019;re binding behaviors to already exists. (There is an exception to this&#x2013;see the next section).</p>
 <pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
@@ -149,6 +151,7 @@ the behavior.
   });
 });
 </code></pre>
+<p>If you&#x2019;re using <a href="https://github.com/rstacruz/onmount">onmount</a>, just run <code>onmount()</code> on document.ready as its documentation describes it.</p>
 <h3 id="use-event-delegation">Use event delegation</h3>
 <p>The only time document.ready is not necessary is when attaching event delegations to <code>document</code>. These are typically best done <em>before</em> DOM ready, which would allow them to work even when the entire document hasn&#x2019;t loaded completely.</p>
 <p>This allows you to listen for those events whether the element is on the page or not, unlike doing <code>$(&apos;[role~=&quot;menu&quot;]&apos;).on(...)</code> which needs to be done when the element is on the page.</p>
@@ -160,7 +163,6 @@ the behavior.
 <p>Also see <a href="extras.html#event-delegation">extras</a> for more info on event delegation.</p>
 <h3 id="use-each()-when-needed">Use each() when needed</h3>
 <p>When your behavior needs to either initialize first and/or keep a state, consider using <a href="http://api.jquery.com/jQuery.each/">jQuery.each</a>. See <a href="extras.html#example-of-each">extras</a> for a more detailed example.</p>
-<p>If you are using <a href="https://github.com/rstacruz/onmount">onmount</a>, this is not necessary.</p>
 <pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
   $(<span class="pl-s">&apos;[role~=&quot;expanding-menu&quot;]&apos;</span>).each(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
     <span class="pl-k">var</span> $menu = $(<span class="pl-k">this</span>);
@@ -172,6 +174,7 @@ the behavior.
   })
 })
 </code></pre>
+<p>If you are using <a href="https://github.com/rstacruz/onmount">onmount</a>, this is not necessary.</p>
 <h3 id="avoid-side-effects">Avoid side effects</h3>
 <p>Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page.</p>
 <pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
@@ -189,6 +192,7 @@ the behavior.
   });
 });
 </code></pre>
+<p>If you&#x2019;re using <a href="https://github.com/rstacruz/onmount">onmount</a>, things like the <code>$nav.length</code> check is not necessary.</p>
 <h3 id="dynamic-content">Dynamic content</h3>
 <p>There are times when you may wish to apply behaviors to content that may appear on the page later on. This is the case for AJAX-loaded content such as modal dialogs.</p>
 <p>You can do three approaches for this:</p>
@@ -216,6 +220,7 @@ $(init);
 $(<span class="pl-c1">document</span>).on(<span class="pl-s">&apos;show.bs.modal&apos;</span>, init);
 })();
 </code></pre>
+<p>If you&#x2019;re using <a href="https://github.com/rstacruz/onmount">onmount</a>, simply bind <code>onmount()</code> to these events (such as <code>show.bs.modal</code>). Idempotency will be taken care of for you.</p>
 <h2 id="namespacing">Namespacing</h2>
 <h3 id="keep-the-global-namespace-clean">Keep the global namespace clean</h3>
 <p>Place your publically-accessible classes and functions in an object like <code>App</code>.</p>
@@ -337,6 +342,10 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
               <ul class="submenu">
                 <li class="menu-item -level-2"><a href="#consider-using-onmount" class="link title link-consider-using-onmount">Consider using onmount</a>
                 </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><a href="#writing-code-without-onmount" class="link title link-writing-code-without-onmount">Writing code without onmount</a>
+              <ul class="submenu">
                 <li class="menu-item -level-2"><a href="#use-document.ready" class="link title link-use-document.ready">Use document.ready</a>
                 </li>
                 <li class="menu-item -level-2"><a href="#use-event-delegation" class="link title link-use-event-delegation">Use event delegation</a>

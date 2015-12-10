@@ -71,7 +71,14 @@
                 "title": "Consider using onmount",
                 "depth": 3,
                 "id": "consider-using-onmount"
-              },
+              }
+            ]
+          },
+          {
+            "title": "Writing code without onmount",
+            "depth": 2,
+            "id": "writing-code-without-onmount",
+            "headings": [
               {
                 "title": "Use document.ready",
                 "depth": 3,
@@ -234,7 +241,14 @@
               "title": "Consider using onmount",
               "depth": 3,
               "id": "consider-using-onmount"
-            },
+            }
+          ]
+        },
+        {
+          "title": "Writing code without onmount",
+          "depth": 2,
+          "id": "writing-code-without-onmount",
+          "headings": [
             {
               "title": "Use document.ready",
               "depth": 3,
