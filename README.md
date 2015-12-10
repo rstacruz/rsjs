@@ -4,7 +4,7 @@
 
 > Reasonable System for JavaScript Structure
 
-:construction: This document is a work in progress. Please feel free to contest any of the points raised here in [the issues](https://github.com/rstacruz/rsjs/issues). Also see [rscss](https://github.com/rstacruz/rscss), a document on CSS conventions that follows a similar line of thinking.
+:construction: This document is a work in progress. Please feel free to contest any of the points raised here in [the issues](https://github.com/rstacruz/rsjs/issues). Also see [rscss], a document on CSS conventions that follows a similar line of thinking.
 
 ## Problem
 
@@ -149,36 +149,21 @@ the behavior.
   $('.js-avatar-popup').on('hover', function() { ... });
 ```
 
-## Namespacing
-
-### Keep the global namespace clean
-
-Place your publically-accessible classes and functions in an object like `App`.
-
-```js
-if (!window.App) window.App = {};
-
-App.Editor = function() {
-  // ...
-};
-```
-
-### Organize your helpers
-
-If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in `helpers/`.
-
-```js
-/* helpers/format_error.js */
-if (!window.Helpers) window.Helpers = {};
-
-Helpers.formatError = function (err) {
-  return "" + err.project_id + " error: " + err.message;
-};
-```
-
 ## Writing code
 
 These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.
+
+### Consider using onmount
+
+[onmount] is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it'd allow you to write better unit tests.
+
+```js
+$.onmount('.js-push-button', function () {
+  $(this).on('click', function () {
+    alert('working...')
+  })
+})
+```
 
 ### Use document.ready
 
@@ -215,18 +200,6 @@ $(function() {
     // - do some initialization code on $menu
     // - bind events to $menu
     // - use `state` to manage state
-  })
-})
-```
-
-### Consider using onmount
-
-[onmount] is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it'd allow you to write better unit tests.
-
-```js
-$.onmount('.js-push-button', function () {
-  $(this).on('click', function () {
-    alert('working...')
   })
 })
 ```
@@ -285,6 +258,33 @@ $(document).on('show.bs.modal', init);
 ```
 
 
+## Namespacing
+
+### Keep the global namespace clean
+
+Place your publically-accessible classes and functions in an object like `App`.
+
+```js
+if (!window.App) window.App = {};
+
+App.Editor = function() {
+  // ...
+};
+```
+
+### Organize your helpers
+
+If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in `helpers/`.
+
+```js
+/* helpers/format_error.js */
+if (!window.Helpers) window.Helpers = {};
+
+Helpers.formatError = function (err) {
+  return "" + err.project_id + " error: " + err.message;
+};
+```
+
 ## Third party libraries
 
 If you want to integrate 3rd-party scripts into your app, consider them as component behaviors as well. For instance, you can integrate [select2.js] by affecting only `.js-select2` classes.
@@ -340,13 +340,13 @@ It also makes it easier to create new app packages should you need more than one
 
 For third-party resources that are loaded externally, consider loading them with an asynchronous loading mechanism such as [script.js].
 
-Some 3rd party libraries are loaded via `<script>` tags, such as Google Maps's API. These vendors typically expect you to embed them, like so:
+Some 3rd party libraries are loaded via `<script>` tags, such as Google Maps's API. These vendors typically expect you to embed them like so:
 
 ```html
 <script src='//maps.google.com/maps/api/js?v=3.1.3&libraries=geometry'></script>
 ```
 
-If your website doesn't use them everywhere, it'd be wasteful to include them everywhere. Instead, consider using [script.js] wrapped in a helper function to load them on an as-needed basis.
+If your website doesn't use them everywhere, it'd be wasteful to include them on every page. Instead, consider using [script.js] wrapped in a helper function to load them on an as-needed basis.
 
 ```js
 function useGoogleMaps (fn) {
@@ -367,8 +367,6 @@ useGoogleMaps(function (gmaps) {
 })
 ```
 
-[script.js]: https://github.com/ded/script.js/
-
 ## Conclusion
 
 This document is a result of my own trial-and-error across many projects, finding out what patterns are worth adhering to on the next project.
@@ -381,9 +379,14 @@ As with every other guideline document out there, try out and find out what work
 
 ## Further reading
 
+- [rscss.io][rscss] - reasonable system for CSS stylesheet structure
+- [onmount] - for safe, idempotent JavaScript behaviors and easy Turbolinks support
+- [script.js] - for loading external scripts
 - [kossnocorp/role](https://github.com/kossnocorp/role#use-role-attribute-ftw)'s explanation on using the `role` attribute
 
 [document.ready]: http://api.jquery.com/ready/
 [jQuery.each]: http://api.jquery.com/jQuery.each/
 [extras]: extras.md
 [onmount]: https://github.com/rstacruz/onmount
+[script.js]: https://github.com/ded/script.js/
+[rscss]: https://rscss.io
