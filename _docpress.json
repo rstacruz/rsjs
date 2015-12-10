@@ -1,0 +1,314 @@
+{
+  "toc": {
+    "sections": [
+      {
+        "title": "rsjs",
+        "source": "README.md",
+        "expand": true,
+        "url": "index.html",
+        "slug": "index",
+        "headings": [
+          {
+            "title": "Problem",
+            "depth": 2,
+            "id": "problem",
+            "headings": [
+              {
+                "title": "The jQuery soup anti-pattern",
+                "depth": 3,
+                "id": "the-jquery-soup-anti-pattern"
+              },
+              {
+                "title": "What's wrong?",
+                "depth": 3,
+                "id": "what's-wrong"
+              },
+              {
+                "title": "About Rails",
+                "depth": 3,
+                "id": "about-rails"
+              }
+            ]
+          },
+          {
+            "title": "Structure",
+            "depth": 2,
+            "id": "structure",
+            "headings": [
+              {
+                "title": "Think in component behaviors",
+                "depth": 3,
+                "id": "think-in-component-behaviors"
+              },
+              {
+                "title": "One component per file",
+                "depth": 3,
+                "id": "one-component-per-file"
+              },
+              {
+                "title": "Load components in all pages",
+                "depth": 3,
+                "id": "load-components-in-all-pages"
+              },
+              {
+                "title": "Use the role attribute",
+                "depth": 3,
+                "id": "use-the-role-attribute"
+              },
+              {
+                "title": "Don't overload class names",
+                "depth": 3,
+                "id": "don't-overload-class-names"
+              }
+            ]
+          },
+          {
+            "title": "Namespacing",
+            "depth": 2,
+            "id": "namespacing",
+            "headings": [
+              {
+                "title": "Keep the global namespace clean",
+                "depth": 3,
+                "id": "keep-the-global-namespace-clean"
+              },
+              {
+                "title": "Organize your helpers",
+                "depth": 3,
+                "id": "organize-your-helpers"
+              }
+            ]
+          },
+          {
+            "title": "Writing code",
+            "depth": 2,
+            "id": "writing-code",
+            "headings": [
+              {
+                "title": "Use document.ready",
+                "depth": 3,
+                "id": "use-document.ready"
+              },
+              {
+                "title": "Use each() when needed",
+                "depth": 3,
+                "id": "use-each()-when-needed"
+              },
+              {
+                "title": "Consider using onmount",
+                "depth": 3,
+                "id": "consider-using-onmount"
+              },
+              {
+                "title": "Avoid side effects",
+                "depth": 3,
+                "id": "avoid-side-effects"
+              },
+              {
+                "title": "Dynamic content",
+                "depth": 3,
+                "id": "dynamic-content"
+              }
+            ]
+          },
+          {
+            "title": "Third party libraries",
+            "depth": 2,
+            "id": "third-party-libraries",
+            "headings": [
+              {
+                "title": "Separate your vendor libs",
+                "depth": 3,
+                "id": "separate-your-vendor-libs"
+              }
+            ]
+          },
+          {
+            "title": "Conclusion",
+            "depth": 2,
+            "id": "conclusion"
+          },
+          {
+            "title": "Further reading",
+            "depth": 2,
+            "id": "further-reading"
+          }
+        ]
+      },
+      {
+        "title": "Extras",
+        "source": "extras.md",
+        "url": "extras.html",
+        "slug": "extras",
+        "headings": [
+          {
+            "title": "Events",
+            "depth": 2,
+            "id": "events"
+          },
+          {
+            "title": "Turbolinks",
+            "depth": 2,
+            "id": "turbolinks"
+          }
+        ]
+      }
+    ]
+  },
+  "index": {
+    "index.html": {
+      "source": "README.md",
+      "title": "rsjs",
+      "slug": "index",
+      "headings": [
+        {
+          "title": "Problem",
+          "depth": 2,
+          "id": "problem",
+          "headings": [
+            {
+              "title": "The jQuery soup anti-pattern",
+              "depth": 3,
+              "id": "the-jquery-soup-anti-pattern"
+            },
+            {
+              "title": "What's wrong?",
+              "depth": 3,
+              "id": "what's-wrong"
+            },
+            {
+              "title": "About Rails",
+              "depth": 3,
+              "id": "about-rails"
+            }
+          ]
+        },
+        {
+          "title": "Structure",
+          "depth": 2,
+          "id": "structure",
+          "headings": [
+            {
+              "title": "Think in component behaviors",
+              "depth": 3,
+              "id": "think-in-component-behaviors"
+            },
+            {
+              "title": "One component per file",
+              "depth": 3,
+              "id": "one-component-per-file"
+            },
+            {
+              "title": "Load components in all pages",
+              "depth": 3,
+              "id": "load-components-in-all-pages"
+            },
+            {
+              "title": "Use the role attribute",
+              "depth": 3,
+              "id": "use-the-role-attribute"
+            },
+            {
+              "title": "Don't overload class names",
+              "depth": 3,
+              "id": "don't-overload-class-names"
+            }
+          ]
+        },
+        {
+          "title": "Namespacing",
+          "depth": 2,
+          "id": "namespacing",
+          "headings": [
+            {
+              "title": "Keep the global namespace clean",
+              "depth": 3,
+              "id": "keep-the-global-namespace-clean"
+            },
+            {
+              "title": "Organize your helpers",
+              "depth": 3,
+              "id": "organize-your-helpers"
+            }
+          ]
+        },
+        {
+          "title": "Writing code",
+          "depth": 2,
+          "id": "writing-code",
+          "headings": [
+            {
+              "title": "Use document.ready",
+              "depth": 3,
+              "id": "use-document.ready"
+            },
+            {
+              "title": "Use each() when needed",
+              "depth": 3,
+              "id": "use-each()-when-needed"
+            },
+            {
+              "title": "Consider using onmount",
+              "depth": 3,
+              "id": "consider-using-onmount"
+            },
+            {
+              "title": "Avoid side effects",
+              "depth": 3,
+              "id": "avoid-side-effects"
+            },
+            {
+              "title": "Dynamic content",
+              "depth": 3,
+              "id": "dynamic-content"
+            }
+          ]
+        },
+        {
+          "title": "Third party libraries",
+          "depth": 2,
+          "id": "third-party-libraries",
+          "headings": [
+            {
+              "title": "Separate your vendor libs",
+              "depth": 3,
+              "id": "separate-your-vendor-libs"
+            }
+          ]
+        },
+        {
+          "title": "Conclusion",
+          "depth": 2,
+          "id": "conclusion"
+        },
+        {
+          "title": "Further reading",
+          "depth": 2,
+          "id": "further-reading"
+        }
+      ]
+    },
+    "extras.html": {
+      "source": "extras.md",
+      "title": "Extras",
+      "slug": "extras",
+      "headings": [
+        {
+          "title": "Events",
+          "depth": 2,
+          "id": "events"
+        },
+        {
+          "title": "Turbolinks",
+          "depth": 2,
+          "id": "turbolinks"
+        }
+      ]
+    }
+  },
+  "sources": {
+    "README.md": "index.html",
+    "extras.md": "extras.html",
+    "docs/docpress.json": "docpress.json"
+  }
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/style.css?t=b42a3c4d">
+    <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
+    <script src="assets/script.js?t=2bcc4b59"></script>
+    <title>Extras</title>
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="body page-extras">
+        <div class="header-nav">
+          <div class="right"><a href="https://github.com/rstacruz/rsjs" data-title="rstacruz/rsjs" class="iconlink">
+              <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="extras">Extras</h1>
+<p>These are guidelines that did not make it to the main document.</p>
+<h2 id="events">Events</h2>
+<h4 id="example-of-each()">Example of each()</h4>
+<p>Here&#x2019;s a more concrete example of the jQuery.each pattern.</p>
+<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-s">&apos;[role~=&quot;expanding-menu&quot;]&apos;</span>).each(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-c">// Some cached lookups.</span>
+    <span class="pl-k">var</span> $menu = $(<span class="pl-k">this</span>);
+    <span class="pl-k">var</span> $box  = $menu.find(<span class="pl-s">&apos;[role~=&quot;content&quot;]&apos;</span>);
+    <span class="pl-k">var</span> state = {};
+    
+    <span class="pl-c">// Bind events via delegation.</span>
+    $menu
+      .on(<span class="pl-s">&apos;click&apos;</span>, <span class="pl-s">&apos;[role~=&quot;expand&quot;]&apos;</span>, expand)
+      .on(<span class="pl-s">&apos;click&apos;</span>, <span class="pl-s">&apos;[role~=&quot;close&quot;]&apos;</span>, close);
+    
+    <span class="pl-c">// Init: expand it on page load.</span>
+    <span class="pl-k">if</span> ($menu.data(<span class="pl-s">&apos;expanded&apos;</span>)) expand();
+    
+    <span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">expand</span>(<span class="hljs-params"></span>) </span>{
+      $box.show();
+      loadFromAjax();
+    }
+    
+    <span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">loadFromAjax</span>(<span class="hljs-params"></span>) </span>{
+      <span class="pl-k">if</span> (state.loaded) <span class="pl-k">return</span>;
+      <span class="pl-c">// <span class="hljs-doctag">TODO:</span> load rows from ajax</span>
+      state.loaded = <span class="pl-c1">true</span>;
+    }    
+  });
+});
+</code></pre>
+<h4 id="event-delegation">Event delegation</h4>
+<p><em>Optional:</em> Instead of using <code>document.ready</code> to bind your events, consider using <a href="http://learn.jquery.com/events/event-delegation/">jQuery event delegation</a> instead.</p>
+<p>This allows you to bind behaviors to, say, modal windows, where the element may not be present when the document loads. There are cases wherein document.ready is necessary. If there&#x2019;s no other way to implement it, this should be fine.</p>
+<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-s">&apos;[role~=&quot;sortable-table&quot;]&apos;</span>).on(<span class="pl-s">&apos;hover&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  });
+});
+</code></pre>
+<pre><code class="lang-js"><span class="pl-c">/* better */</span>
+$(<span class="pl-c1">document</span>).on(<span class="pl-s">&apos;hover&apos;</span>, <span class="pl-s">&apos;[role~=&quot;sortable-table&quot;]&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+});
+</code></pre>
+<h2 id="turbolinks">Turbolinks</h2>
+<p>These are guidelines to make your JS structure more friendly to Turbolinks. They may still be of benefit even without Turbolinks, however.</p>
+<br>
+<h4 id="tag-your-event-handlers">Tag your event handlers</h4>
+<p>Makes things neater, and allows you to trigger them later on. This also makes it easy to unbind them.</p>
+<pre><code class="lang-js">$(<span class="pl-s">&apos;...&apos;</span>).on(<span class="pl-s">&apos;click.myevent&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+});
+
+<span class="pl-c">/* later: */</span>
+$(<span class="pl-s">&apos;...&apos;</span>).off(<span class="pl-s">&apos;.myevent&apos;</span>);
+</code></pre>
+<br>
+<h4 id="clean-up-if-needed">Clean up if needed</h4>
+<p>Listen to <code>page:change</code> (?) to clean up anything to prepare the DOM for the next page.</p>
+<pre><code class="lang-js">... <span class="pl-c">// can&apos;t think of an example, lol.</span>
+</code></pre>
+<br>
+
+        </div>
+        <div class="footer-nav">
+          <div class="left"><a href="index.html"><span class="title">rsjs</span></a></div>
+        </div>
+      </div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1"><a href="index.html" class="link title  link-index">rsjs</a>
+            </li>
+            <li class="menu-item -level-1"><a href="extras.html" class="link title -active link-extras">Extras</a>
+              <ul class="headings heading-list">
+                <li class="heading-item -depth-2"><a href="#events" class="hlink link-events">Events</a>
+                </li>
+                <li class="heading-item -depth-2"><a href="#turbolinks" class="hlink link-turbolinks">Turbolinks</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </body>
+</html>

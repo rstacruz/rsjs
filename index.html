@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/style.css?t=b42a3c4d">
+    <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
+    <script src="assets/script.js?t=2bcc4b59"></script>
+    <title>rsjs</title>
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="body page-index">
+        <div class="header-nav">
+          <div class="right"><a href="https://github.com/rstacruz/rsjs" data-title="rstacruz/rsjs" class="iconlink">
+              <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
+          </div>
+        </div>
+        <div class="markdown-body"><h1 class="massive-header -with-tagline" id="rsjs">rsjs</h1>
+<blockquote>
+<p>Reasonable System for JavaScript Structure</p>
+</blockquote>
+<p>:construction: This document is a work in progress. Please feel free to contest any of the points raised here in <a href="https://github.com/rstacruz/rsjs/issues">the issues</a>. Also see <a href="https://github.com/rstacruz/rscss">rscss</a>, a document on CSS conventions that follows a similar line of thinking.</p>
+<h2 id="problem">Problem</h2>
+<p>For a typical non-<a href="https://en.wikipedia.org/wiki/Single-page_application">SPA</a> website, it will eventually be apparent that there needs to be conventions enforced for consistency. While <a href="https://github.com/airbnb/javascript">styleguides</a> cover coding styles, conventions on namespacing and file structures are usually absent.</p>
+<h3 id="the-jquery-soup-anti-pattern">The jQuery soup anti-pattern</h3>
+<p>You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s">&apos;blogpost.js&apos;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;author footnote&apos;</span>&gt;</span>
+  This article was written by
+  <span class="hljs-tag">&lt;<span class="pl-ent">a</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;profile-link&apos;</span> <span class="pl-e">href</span>=<span class="pl-s">&quot;/user/rstacruz&quot;</span>&gt;</span>Rico Sta. Cruz<span class="hljs-tag">&lt;/<span class="pl-ent">a</span>&gt;</span>.
+<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-s">&apos;.author a&apos;</span>).on(<span class="pl-s">&apos;hover&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">var</span> username = $(<span class="pl-k">this</span>).attr(<span class="pl-s">&apos;href&apos;</span>);
+
+    showTooltipProfile(username, { below: $(<span class="pl-k">this</span>) });
+  });
+});
+</code></pre>
+<h3 id="what&apos;s-wrong">What&#x2019;s wrong?</h3>
+<p>This anti-pattern leads to many issues, which rsjs attempts to address.</p>
+<ul>
+<li>
+<p><strong>Ambiguious sources:</strong> It&#x2019;s not obvious where to look for the JS behavior. (Is the handler attached to <em>.author</em>, <em>.footnote</em>, or <em>.profile-link</em>?)</p>
+</li>
+<li>
+<p><strong>Non-reusable:</strong> It&#x2019;s not obvious how to reuse the behavior in another page. (Should <em>blogpost.js</em> be included in the other pages that need it? What if that file contains other behaviors you don&#x2019;t need for that page?)</p>
+</li>
+<li>
+<p><strong>Lack of organization:</strong> Making new behaviors gets confusing. (Do you make a new <code>.js</code> file for each page? Do you add them to the global <code>application.js</code>? How do you load them?)</p>
+</li>
+</ul>
+<h3 id="about-rails">About Rails</h3>
+<p>This styleguide assumes Rails conventions of concatenating .js files. These don&#x2019;t apply to loaders like Browserify or RequireJS.</p>
+<h2 id="structure">Structure</h2>
+<h3 id="think-in-component-behaviors">Think in component behaviors</h3>
+<p>Think that a piece of JavaScript code to will only affect 1 &#x201C;component&#x201D;, that is, a section in the DOM.</p>
+<p>There files are &#x201C;behaviors&#x201D;: code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS component <code>collapsible-nav</code> only affects a certain DOM subtree, and is placed on its own file.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;main-navbar&apos;</span> <span class="pl-e">role</span>=<span class="pl-s">&apos;collapsible-nav&apos;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="pl-ent">button</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;expand&apos;</span> <span class="pl-e">role</span>=<span class="pl-s">&apos;expand&apos;</span>&gt;</span>Expand<span class="hljs-tag">&lt;/<span class="pl-ent">button</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s">&apos;/&apos;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="pl-ent">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="pl-ent">ul</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-js"><span class="pl-c">/* behaviors/collapsible-nav.js */</span>
+$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="pl-k">var</span> $nav = $(<span class="pl-s">&apos;[role~=&quot;collapsible-nav&quot;]&apos;</span>);
+  <span class="pl-k">if</span> (!$nav.length) <span class="pl-k">return</span>;
+
+  $nav
+    .on(<span class="pl-s">&apos;click&apos;</span>, <span class="pl-s">&apos;[role~=&quot;expand&quot;]&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+      $nav.addClass(<span class="pl-s">&apos;-expanded&apos;</span>);
+    })
+    .on(<span class="pl-s">&apos;mouseout&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+      $nav.removeClass(<span class="pl-s">&apos;-expanded&apos;</span>);
+    });
+});
+</code></pre>
+<h3 id="one-component-per-file">One component per file</h3>
+<p>Each file should a self-contained piece of code that only affects a <em>single</em> element type.</p>
+<p>Keep them in your project&#x2019;s <code>behaviors/</code> path. Name these files according to the roles (<a href="#usetheroleattribute">see below</a>) or class names they affect.</p>
+<pre><code>&#x2514;&#x2500;&#x2500; javascripts/
+    &#x2514;&#x2500;&#x2500; behaviors/
+        &#x251C;&#x2500;&#x2500; collapsible-nav.js
+        &#x251C;&#x2500;&#x2500; avatar-hover.js
+        &#x251C;&#x2500;&#x2500; popup-dialog.js
+        &#x2514;&#x2500;&#x2500; notification.js
+</code></pre>
+<h3 id="load-components-in-all-pages">Load components in all pages</h3>
+<p>Your main .js file should be a concatenation of all your <code>behaviors</code>.</p>
+<p>It should be safe to load all behaviors for all pages. Since your behaviors are localized to their respective components, they will not have any effect unless the element it applies to is on the page.</p>
+<p>In Rails, this can be accomplished with <code>require_tree</code>.</p>
+<pre><code class="lang-js"><span class="pl-c">// js/application.js</span>
+<span class="pl-c">/*= require_tree ./behaviors
+</span></code></pre>
+<h3 id="use-the-role-attribute">Use the role attribute</h3>
+<p><em>Optional:</em> It&#x2019;s preferred to mark your component with a <code>role</code> attribute.</p>
+<p>You can use ID&#x2019;s and classes, but this can be confusing since it isn&#x2019;t obvious which class names are for styles and which have JS behaviors bound to them. This applies to elements inside the component too, such as buttons (see collapsible-nav example).</p>
+<pre><code class="lang-html"><span class="pl-c">&lt;!-- bad --&gt;</span>
+<span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;user-info&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+$(&apos;.user-info&apos;).on(&apos;hover&apos;, function() { ... });
+</code></pre>
+<pre><code class="lang-html"><span class="pl-c">&lt;!-- ok --&gt;</span>
+<span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;user-info&apos;</span> <span class="pl-e">role</span>=<span class="pl-s">&apos;avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+$(&apos;[role~=&quot;avatar-popup&quot;]&apos;).on(&apos;hover&apos;, function() { ... });
+</code></pre>
+<h3 id="don&apos;t-overload-class-names">Don&#x2019;t overload class names</h3>
+<p>If you don&#x2019;t like the <code>role</code> attribute and prefer classes, don&#x2019;t add styles to the classes that your JS uses. For instance, if you&#x2019;re styling a <code>.user-info</code> class, don&#x2019;t attach an event to it; instead, add another class name (eg, <code>.js-user-info</code>) to use in your JS.</p>
+<p>This will also make it easier to restyle components as needed.</p>
+<pre><code class="lang-html"><span class="pl-c">&lt;!--
+Bad: is the JavaScript behavior attached to .user-info? or to
+.centered? This can be confusing developers unfamiliar with your code.
+--&gt;</span>
+  <span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;user-info centered&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+  $(&apos;.user-info&apos;).on(&apos;hover&apos;, function() { ... });
+
+<span class="pl-c">&lt;!--
+Better: this makes it more obvious to find the source of
+the behavior.
+--&gt;</span>
+  <span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;user-info js-avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+  $(&apos;.js-avatar-popup&apos;).on(&apos;hover&apos;, function() { ... });
+</code></pre>
+<h2 id="namespacing">Namespacing</h2>
+<h3 id="keep-the-global-namespace-clean">Keep the global namespace clean</h3>
+<p>Place your publically-accessible classes and functions in an object like <code>App</code>.</p>
+<pre><code class="lang-js"><span class="pl-k">if</span> (!<span class="pl-c1">window</span>.App) <span class="pl-c1">window</span>.App = {};
+
+App.Editor = <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="pl-c">// ...</span>
+};
+</code></pre>
+<h3 id="organize-your-helpers">Organize your helpers</h3>
+<p>If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in <code>helpers/</code>.</p>
+<pre><code class="lang-js"><span class="pl-c">/* helpers/format_error.js */</span>
+<span class="pl-k">if</span> (!<span class="pl-c1">window</span>.Helpers) <span class="pl-c1">window</span>.Helpers = {};
+
+Helpers.formatError = <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params">err</span>) </span>{
+  <span class="pl-k">return</span> <span class="pl-s">&quot;&quot;</span> + err.project_id + <span class="pl-s">&quot; error: &quot;</span> + err.message;
+};
+</code></pre>
+<h2 id="writing-code">Writing code</h2>
+<p>These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.</p>
+<h3 id="use-document.ready">Use document.ready</h3>
+<p>Add your events and initialization code under the <a href="http://api.jquery.com/ready/">document.ready</a> handler.</p>
+<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-s">&apos;[role~=&quot;expanding-menu&quot;]&apos;</span>).on(<span class="pl-s">&apos;hover&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="pl-c">// ...</span>
+  });
+});
+</code></pre>
+<p>The only time document.ready is not necessary is when attaching event delegations to <code>document</code>. These are typically best done <em>before</em> DOM ready, which would allow them to work even when the entire document hasn&#x2019;t loaded completely.</p>
+<pre><code class="lang-js">$(<span class="pl-c1">document</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="pl-s">&apos;[role~=&quot;.bar&quot;]&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="pl-c">// ...</span>
+});
+</code></pre>
+<h3 id="use-each()-when-needed">Use each() when needed</h3>
+<p>When your behavior needs to either initialize first and/or keep a state, consider using <a href="http://api.jquery.com/jQuery.each/">jQuery.each</a>. See <a href="extras.html#example-of-each">extras</a> for a more detailed example.</p>
+<p>If you are using <a href="https://github.com/rstacruz/onmount">onmount</a>, this is not necessary.</p>
+<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-s">&apos;[role~=&quot;expanding-menu&quot;]&apos;</span>).each(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">var</span> $menu = $(<span class="pl-k">this</span>);
+    <span class="pl-k">var</span> state = {};
+    
+    <span class="pl-c">// - do some initialization code on $menu</span>
+    <span class="pl-c">// - bind events to $menu</span>
+    <span class="pl-c">// - use `state` to manage state</span>
+  })
+})
+</code></pre>
+<h3 id="consider-using-onmount">Consider using onmount</h3>
+<p><a href="https://github.com/rstacruz/onmount">onmount</a> is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it&#x2019;d allow you to write better unit tests.</p>
+<pre><code class="lang-js">$.onmount(<span class="pl-s">&apos;.js-push-button&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-k">this</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    alert(<span class="pl-s">&apos;working...&apos;</span>)
+  })
+})
+</code></pre>
+<h3 id="avoid-side-effects">Avoid side effects</h3>
+<p>Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page.</p>
+<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="pl-k">var</span> $nav = $(<span class="pl-s">&quot;[role~=&apos;hiding-nav&apos;]&quot;</span>);
+
+  <span class="pl-c">// Don&apos;t bind the `scroll` event handler if the element isn&apos;t present.</span>
+  <span class="pl-c">// This will avoid making the page sluggish unnecessarily. This also</span>
+  <span class="pl-c">// avoids the error that $nav[0] will be undefined.</span>
+  <span class="pl-k">if</span> (!$nav.length) <span class="pl-k">return</span>;
+
+  $(<span class="pl-s">&apos;html, body&apos;</span>).on(<span class="pl-s">&apos;scroll&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">if</span> ($nav[<span class="hljs-number">0</span>].disabled) <span class="pl-k">return</span>;
+    <span class="pl-k">var</span> isScrolled = $(<span class="pl-c1">window</span>).scrollTop() &gt; $nav.height();
+    $nav.toggleClass(<span class="pl-s">&apos;-hidden&apos;</span>, !isScrolled);
+  });
+});
+</code></pre>
+<h3 id="dynamic-content">Dynamic content</h3>
+<p>There are times when you may wish to apply behaviors to content that may appear on the page later on. This is the case for AJAX-loaded content such as modal dialogs.</p>
+<p>In this case, wrap your initialization code in a function, and run that function on document.ready and when the DOM changes (eg, <code>show.bs.modal</code> in the case of Bootstrap modal dialogs).</p>
+<p>Since your initializer may be called multiple times in a page, you will need to make them <a href="https://en.wikipedia.org/wiki/Idempotent">idempotent</a> by bypassing elements that it has already been applied to. This can be done with an <a href="http://en.wikipedia.org/wiki/Include_guard">include guard</a> pattern.</p>
+<p>An alternative to this would be event delegation: see <a href="extras.html#event-delegation">extras</a> for more info.</p>
+<pre><code class="lang-js">;(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+<span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">init</span>(<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-s">&apos;[role~=&quot;key-value-pair&quot;]&apos;</span>).each(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">var</span> $parent = $(<span class="pl-k">this</span>);
+    
+    <span class="pl-c">// an include guard to keep it idempotent</span>
+    <span class="pl-k">if</span> ($parent.data(<span class="pl-s">&apos;key-value-pair-loaded&apos;</span>)) <span class="pl-k">return</span>;
+    $parent.data(<span class="pl-s">&apos;key-value-pair-loaded&apos;</span>, <span class="pl-c1">true</span>);
+    
+    <span class="pl-c">// init code here</span>
+  })
+}
+
+$(init);
+$(<span class="pl-c1">document</span>).on(<span class="pl-s">&apos;show.bs.modal&apos;</span>, init);
+})();
+</code></pre>
+<h2 id="third-party-libraries">Third party libraries</h2>
+<p>If you want to integrate 3rd-party scripts into your app, consider them as component behaviors as well. For instance, you can integrate <a href="https://github.com/select2/select2">select2.js</a> by affecting only <code>.js-select2</code> classes.</p>
+<pre><code class="lang-js">...
+&#x2514;&#x2500;&#x2500; javascripts/
+    &#x2514;&#x2500;&#x2500; behaviors/
+        &#x251C;&#x2500;&#x2500; colorpicker.js
+        &#x251C;&#x2500;&#x2500; select2.js
+        &#x2514;&#x2500;&#x2500; wow.js
+</code></pre>
+<pre><code class="lang-js"><span class="pl-c">// select2.js -- affects `.js-select2`</span>
+$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-s">&quot;.js-select2&quot;</span>).select2();
+})
+</code></pre>
+<pre><code class="lang-js"><span class="pl-c">// wow.js -- affects `.wow`</span>
+$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="pl-k">new</span> WOW().init();
+})
+</code></pre>
+<h3 id="separate-your-vendor-libs">Separate your vendor libs</h3>
+<p>Keep your 3rd-party libraries in something like <code>vendor.js</code>.</p>
+<p>This will have browsers cache the 3rd-party libs separately so users won&#x2019;t need to re-fetch them on your next deployment.</p>
+<p>It also makes it easier to create new app packages should you need more than one (eg, one for your public pages and another for private dashboards).</p>
+<pre><code class="lang-js"><span class="pl-c">/* vendor.js */</span>
+<span class="pl-c">//= require jquery</span>
+<span class="pl-c">//= require jquery_ujs</span>
+<span class="pl-c">//= require bootstrap</span>
+</code></pre>
+<pre><code class="lang-js"><span class="pl-c">/* application.js */</span>
+<span class="pl-c">//= require_tree ./helpers</span>
+<span class="pl-c">//= require_tree ./behaviors</span>
+</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>This document is a result of my own trial-and-error across many projects, finding out what patterns are worth adhering to on the next project.</p>
+<p>This document prioritizes developer sanity first. The approaches here may not have the most performant, especially given its preference for event delegations and running <code>document.ready</code> code for pages that don&#x2019;t need it. Regardless, the pros and cons were weighed and ultimately favored approaches that would be maintainable in the long run.</p>
+<p>The guidelines outlined here are not a one-size-fits-all approach. For one, it&#x2019;s not suited for <a href="https://en.wikipedia.org/wiki/Single-page_application">single page applications</a>, or any other website relying on very heavy client-side behavior. It&#x2019;s written for the typical conventional web app in mind: a collection of HTML pages that occasionally need a bit of JavaScript to make things work.</p>
+<p>As with every other guideline document out there, try out and find out what works for you and what doesn&#x2019;t, and adapt accordingly.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://github.com/kossnocorp/role#use-role-attribute-ftw">kossnocorp/role</a>&apos;s explanation on using the <code>role</code> attribute</li>
+</ul>
+
+        </div>
+        <div class="footer-nav">
+          <div class="right"><a href="extras.html"><span class="label">Next: </span><span class="title">Extras</span></a></div>
+        </div>
+      </div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1"><a href="index.html" class="link title -active link-index">rsjs</a>
+            </li>
+            <li class="menu-item -level-1 -parent"><a href="#problem" class="link title link-problem">Problem</a>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="#the-jquery-soup-anti-pattern" class="link title link-the-jquery-soup-anti-pattern">The jQuery soup anti-pattern</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#what's-wrong" class="link title link-what's-wrong">What's wrong?</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#about-rails" class="link title link-about-rails">About Rails</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><a href="#structure" class="link title link-structure">Structure</a>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="#think-in-component-behaviors" class="link title link-think-in-component-behaviors">Think in component behaviors</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#one-component-per-file" class="link title link-one-component-per-file">One component per file</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#load-components-in-all-pages" class="link title link-load-components-in-all-pages">Load components in all pages</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#use-the-role-attribute" class="link title link-use-the-role-attribute">Use the role attribute</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#don't-overload-class-names" class="link title link-don't-overload-class-names">Don't overload class names</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><a href="#namespacing" class="link title link-namespacing">Namespacing</a>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="#keep-the-global-namespace-clean" class="link title link-keep-the-global-namespace-clean">Keep the global namespace clean</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#organize-your-helpers" class="link title link-organize-your-helpers">Organize your helpers</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><a href="#writing-code" class="link title link-writing-code">Writing code</a>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="#use-document.ready" class="link title link-use-document.ready">Use document.ready</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#use-each()-when-needed" class="link title link-use-each()-when-needed">Use each() when needed</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#consider-using-onmount" class="link title link-consider-using-onmount">Consider using onmount</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#avoid-side-effects" class="link title link-avoid-side-effects">Avoid side effects</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#dynamic-content" class="link title link-dynamic-content">Dynamic content</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><a href="#third-party-libraries" class="link title link-third-party-libraries">Third party libraries</a>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="#separate-your-vendor-libs" class="link title link-separate-your-vendor-libs">Separate your vendor libs</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1"><a href="#conclusion" class="link title link-conclusion">Conclusion</a>
+            </li>
+            <li class="menu-item -level-1"><a href="#further-reading" class="link title link-further-reading">Further reading</a>
+            </li>
+            <li class="menu-item -level-1"><a href="extras.html" class="link title  link-extras">Extras</a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </body>
+</html>
