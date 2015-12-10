@@ -21,7 +21,7 @@
 <blockquote>
 <p>Reasonable System for JavaScript Structure</p>
 </blockquote>
-<p>:construction: This document is a work in progress. Please feel free to contest any of the points raised here in <a href="https://github.com/rstacruz/rsjs/issues">the issues</a>. Also see <a href="https://github.com/rstacruz/rscss">rscss</a>, a document on CSS conventions that follows a similar line of thinking.</p>
+<p>:construction: This document is a work in progress. Please feel free to contest any of the points raised here in <a href="https://github.com/rstacruz/rsjs/issues">the issues</a>. Also see <a href="https://rscss.io">rscss</a>, a document on CSS conventions that follows a similar line of thinking.</p>
 <h2 id="problem">Problem</h2>
 <p>For a typical non-<a href="https://en.wikipedia.org/wiki/Single-page_application">SPA</a> website, it will eventually be apparent that there needs to be conventions enforced for consistency. While <a href="https://github.com/airbnb/javascript">styleguides</a> cover coding styles, conventions on namespacing and file structures are usually absent.</p>
 <h3 id="the-jquery-soup-anti-pattern">The jQuery soup anti-pattern</h3>
@@ -125,26 +125,16 @@ the behavior.
   <span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;user-info js-avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
   $(&apos;.js-avatar-popup&apos;).on(&apos;hover&apos;, function() { ... });
 </code></pre>
-<h2 id="namespacing">Namespacing</h2>
-<h3 id="keep-the-global-namespace-clean">Keep the global namespace clean</h3>
-<p>Place your publically-accessible classes and functions in an object like <code>App</code>.</p>
-<pre><code class="lang-js"><span class="pl-k">if</span> (!<span class="pl-c1">window</span>.App) <span class="pl-c1">window</span>.App = {};
-
-App.Editor = <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
-  <span class="pl-c">// ...</span>
-};
-</code></pre>
-<h3 id="organize-your-helpers">Organize your helpers</h3>
-<p>If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in <code>helpers/</code>.</p>
-<pre><code class="lang-js"><span class="pl-c">/* helpers/format_error.js */</span>
-<span class="pl-k">if</span> (!<span class="pl-c1">window</span>.Helpers) <span class="pl-c1">window</span>.Helpers = {};
-
-Helpers.formatError = <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params">err</span>) </span>{
-  <span class="pl-k">return</span> <span class="pl-s">&quot;&quot;</span> + err.project_id + <span class="pl-s">&quot; error: &quot;</span> + err.message;
-};
-</code></pre>
 <h2 id="writing-code">Writing code</h2>
 <p>These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.</p>
+<h3 id="consider-using-onmount">Consider using onmount</h3>
+<p><a href="https://github.com/rstacruz/onmount">onmount</a> is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it&#x2019;d allow you to write better unit tests.</p>
+<pre><code class="lang-js">$.onmount(<span class="pl-s">&apos;.js-push-button&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-k">this</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    alert(<span class="pl-s">&apos;working...&apos;</span>)
+  })
+})
+</code></pre>
 <h3 id="use-document.ready">Use document.ready</h3>
 <p>Add your events and initialization code under the <a href="http://api.jquery.com/ready/">document.ready</a> handler.</p>
 <pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
@@ -169,14 +159,6 @@ Helpers.formatError = <span class="hljs-function"><span class="pl-k">function</s
     <span class="pl-c">// - do some initialization code on $menu</span>
     <span class="pl-c">// - bind events to $menu</span>
     <span class="pl-c">// - use `state` to manage state</span>
-  })
-})
-</code></pre>
-<h3 id="consider-using-onmount">Consider using onmount</h3>
-<p><a href="https://github.com/rstacruz/onmount">onmount</a> is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it&#x2019;d allow you to write better unit tests.</p>
-<pre><code class="lang-js">$.onmount(<span class="pl-s">&apos;.js-push-button&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-  $(<span class="pl-k">this</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-    alert(<span class="pl-s">&apos;working...&apos;</span>)
   })
 })
 </code></pre>
@@ -219,6 +201,24 @@ $(init);
 $(<span class="pl-c1">document</span>).on(<span class="pl-s">&apos;show.bs.modal&apos;</span>, init);
 })();
 </code></pre>
+<h2 id="namespacing">Namespacing</h2>
+<h3 id="keep-the-global-namespace-clean">Keep the global namespace clean</h3>
+<p>Place your publically-accessible classes and functions in an object like <code>App</code>.</p>
+<pre><code class="lang-js"><span class="pl-k">if</span> (!<span class="pl-c1">window</span>.App) <span class="pl-c1">window</span>.App = {};
+
+App.Editor = <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="pl-c">// ...</span>
+};
+</code></pre>
+<h3 id="organize-your-helpers">Organize your helpers</h3>
+<p>If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in <code>helpers/</code>.</p>
+<pre><code class="lang-js"><span class="pl-c">/* helpers/format_error.js */</span>
+<span class="pl-k">if</span> (!<span class="pl-c1">window</span>.Helpers) <span class="pl-c1">window</span>.Helpers = {};
+
+Helpers.formatError = <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params">err</span>) </span>{
+  <span class="pl-k">return</span> <span class="pl-s">&quot;&quot;</span> + err.project_id + <span class="pl-s">&quot; error: &quot;</span> + err.message;
+};
+</code></pre>
 <h2 id="third-party-libraries">Third party libraries</h2>
 <p>If you want to integrate 3rd-party scripts into your app, consider them as component behaviors as well. For instance, you can integrate <a href="https://github.com/select2/select2">select2.js</a> by affecting only <code>.js-select2</code> classes.</p>
 <pre><code class="lang-js">...
@@ -253,10 +253,10 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 </code></pre>
 <h3 id="load-3rd-party-resources-asynchronously">Load 3rd-party resources asynchronously</h3>
 <p>For third-party resources that are loaded externally, consider loading them with an asynchronous loading mechanism such as <a href="https://github.com/ded/script.js/">script.js</a>.</p>
-<p>Some 3rd party libraries are loaded via <code>&lt;script&gt;</code> tags, such as Google Maps&#x2019;s API. These vendors typically expect you to embed them, like so:</p>
+<p>Some 3rd party libraries are loaded via <code>&lt;script&gt;</code> tags, such as Google Maps&#x2019;s API. These vendors typically expect you to embed them like so:</p>
 <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s">&apos;//maps.google.com/maps/api/js?v=3.1.3&amp;libraries=geometry&apos;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
 </code></pre>
-<p>If your website doesn&#x2019;t use them everywhere, it&#x2019;d be wasteful to include them everywhere. Instead, consider using <a href="https://github.com/ded/script.js/">script.js</a> wrapped in a helper function to load them on an as-needed basis.</p>
+<p>If your website doesn&#x2019;t use them everywhere, it&#x2019;d be wasteful to include them on every page. Instead, consider using <a href="https://github.com/ded/script.js/">script.js</a> wrapped in a helper function to load them on an as-needed basis.</p>
 <pre><code class="lang-js"><span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">useGoogleMaps</span> (<span class="hljs-params">fn</span>) </span>{
   <span class="pl-k">var</span> url = <span class="pl-s">&apos;//maps.google.com/maps/api/js?v=3.1.3&amp;libraries=geometry&apos;</span>
 
@@ -278,6 +278,9 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 <p>As with every other guideline document out there, try out and find out what works for you and what doesn&#x2019;t, and adapt accordingly.</p>
 <h2 id="further-reading">Further reading</h2>
 <ul>
+<li><a href="https://rscss.io">rscss.io</a> - reasonable system for CSS stylesheet structure</li>
+<li><a href="https://github.com/rstacruz/onmount">onmount</a> - for safe, idempotent JavaScript behaviors and easy Turbolinks support</li>
+<li><a href="https://github.com/ded/script.js/">script.js</a> - for loading external scripts</li>
 <li><a href="https://github.com/kossnocorp/role#use-role-attribute-ftw">kossnocorp/role</a>&apos;s explanation on using the <code>role</code> attribute</li>
 </ul>
 
@@ -315,25 +318,25 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
                 </li>
               </ul>
             </li>
+            <li class="menu-item -level-1 -parent"><a href="#writing-code" class="link title link-writing-code">Writing code</a>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="#consider-using-onmount" class="link title link-consider-using-onmount">Consider using onmount</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#use-document.ready" class="link title link-use-document.ready">Use document.ready</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#use-each()-when-needed" class="link title link-use-each()-when-needed">Use each() when needed</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#avoid-side-effects" class="link title link-avoid-side-effects">Avoid side effects</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#dynamic-content" class="link title link-dynamic-content">Dynamic content</a>
+                </li>
+              </ul>
+            </li>
             <li class="menu-item -level-1 -parent"><a href="#namespacing" class="link title link-namespacing">Namespacing</a>
               <ul class="submenu">
                 <li class="menu-item -level-2"><a href="#keep-the-global-namespace-clean" class="link title link-keep-the-global-namespace-clean">Keep the global namespace clean</a>
                 </li>
                 <li class="menu-item -level-2"><a href="#organize-your-helpers" class="link title link-organize-your-helpers">Organize your helpers</a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item -level-1 -parent"><a href="#writing-code" class="link title link-writing-code">Writing code</a>
-              <ul class="submenu">
-                <li class="menu-item -level-2"><a href="#use-document.ready" class="link title link-use-document.ready">Use document.ready</a>
-                </li>
-                <li class="menu-item -level-2"><a href="#use-each()-when-needed" class="link title link-use-each()-when-needed">Use each() when needed</a>
-                </li>
-                <li class="menu-item -level-2"><a href="#consider-using-onmount" class="link title link-consider-using-onmount">Consider using onmount</a>
-                </li>
-                <li class="menu-item -level-2"><a href="#avoid-side-effects" class="link title link-avoid-side-effects">Avoid side effects</a>
-                </li>
-                <li class="menu-item -level-2"><a href="#dynamic-content" class="link title link-dynamic-content">Dynamic content</a>
                 </li>
               </ul>
             </li>

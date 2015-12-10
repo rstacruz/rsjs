@@ -63,6 +63,38 @@
             ]
           },
           {
+            "title": "Writing code",
+            "depth": 2,
+            "id": "writing-code",
+            "headings": [
+              {
+                "title": "Consider using onmount",
+                "depth": 3,
+                "id": "consider-using-onmount"
+              },
+              {
+                "title": "Use document.ready",
+                "depth": 3,
+                "id": "use-document.ready"
+              },
+              {
+                "title": "Use each() when needed",
+                "depth": 3,
+                "id": "use-each()-when-needed"
+              },
+              {
+                "title": "Avoid side effects",
+                "depth": 3,
+                "id": "avoid-side-effects"
+              },
+              {
+                "title": "Dynamic content",
+                "depth": 3,
+                "id": "dynamic-content"
+              }
+            ]
+          },
+          {
             "title": "Namespacing",
             "depth": 2,
             "id": "namespacing",
@@ -76,38 +108,6 @@
                 "title": "Organize your helpers",
                 "depth": 3,
                 "id": "organize-your-helpers"
-              }
-            ]
-          },
-          {
-            "title": "Writing code",
-            "depth": 2,
-            "id": "writing-code",
-            "headings": [
-              {
-                "title": "Use document.ready",
-                "depth": 3,
-                "id": "use-document.ready"
-              },
-              {
-                "title": "Use each() when needed",
-                "depth": 3,
-                "id": "use-each()-when-needed"
-              },
-              {
-                "title": "Consider using onmount",
-                "depth": 3,
-                "id": "consider-using-onmount"
-              },
-              {
-                "title": "Avoid side effects",
-                "depth": 3,
-                "id": "avoid-side-effects"
-              },
-              {
-                "title": "Dynamic content",
-                "depth": 3,
-                "id": "dynamic-content"
               }
             ]
           },
@@ -221,6 +221,38 @@
           ]
         },
         {
+          "title": "Writing code",
+          "depth": 2,
+          "id": "writing-code",
+          "headings": [
+            {
+              "title": "Consider using onmount",
+              "depth": 3,
+              "id": "consider-using-onmount"
+            },
+            {
+              "title": "Use document.ready",
+              "depth": 3,
+              "id": "use-document.ready"
+            },
+            {
+              "title": "Use each() when needed",
+              "depth": 3,
+              "id": "use-each()-when-needed"
+            },
+            {
+              "title": "Avoid side effects",
+              "depth": 3,
+              "id": "avoid-side-effects"
+            },
+            {
+              "title": "Dynamic content",
+              "depth": 3,
+              "id": "dynamic-content"
+            }
+          ]
+        },
+        {
           "title": "Namespacing",
           "depth": 2,
           "id": "namespacing",
@@ -234,38 +266,6 @@
               "title": "Organize your helpers",
               "depth": 3,
               "id": "organize-your-helpers"
-            }
-          ]
-        },
-        {
-          "title": "Writing code",
-          "depth": 2,
-          "id": "writing-code",
-          "headings": [
-            {
-              "title": "Use document.ready",
-              "depth": 3,
-              "id": "use-document.ready"
-            },
-            {
-              "title": "Use each() when needed",
-              "depth": 3,
-              "id": "use-each()-when-needed"
-            },
-            {
-              "title": "Consider using onmount",
-              "depth": 3,
-              "id": "consider-using-onmount"
-            },
-            {
-              "title": "Avoid side effects",
-              "depth": 3,
-              "id": "avoid-side-effects"
-            },
-            {
-              "title": "Dynamic content",
-              "depth": 3,
-              "id": "dynamic-content"
             }
           ]
         },
