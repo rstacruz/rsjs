@@ -165,6 +165,10 @@ $.onmount('.js-push-button', function () {
 })
 ```
 
+## Writing code without onmount
+
+The [onmount] library solves many pitfalls when writing component behaviors. If you choose not to use it, however, be prepared to deal with those caveats on your own. This next section describes these cases in detail.
+
 ### Use document.ready
 
 Add your events and initialization code under the [document.ready] handler. This assures you that the element you're binding behaviors to already exists. (There is an exception to this--see the next section).
@@ -176,6 +180,8 @@ $(function() {
   });
 });
 ```
+
+If you're using [onmount], just run `onmount()` on document.ready as its documentation describes it.
 
 ### Use event delegation
 
@@ -197,8 +203,6 @@ Also see [extras](extras.md#event-delegation) for more info on event delegation.
 
 When your behavior needs to either initialize first and/or keep a state, consider using [jQuery.each]. See [extras](extras.md#example-of-each) for a more detailed example.
 
-If you are using [onmount], this is not necessary.
-
 ```js
 $(function() {
   $('[role~="expanding-menu"]').each(function() {
@@ -211,6 +215,8 @@ $(function() {
   })
 })
 ```
+
+If you are using [onmount], this is not necessary.
 
 ### Avoid side effects
 
@@ -232,6 +238,8 @@ $(function () {
   });
 });
 ```
+
+If you're using [onmount], things like the `$nav.length` check is not necessary.
 
 ### Dynamic content
 
@@ -269,6 +277,7 @@ $(document).on('show.bs.modal', init);
 })();
 ```
 
+If you're using [onmount], simply bind `onmount()` to these events (such as `show.bs.modal`). Idempotency will be taken care of for you.
 
 ## Namespacing
 
