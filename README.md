@@ -364,27 +364,39 @@ For third-party resources that are loaded externally, consider loading them with
 Some 3rd party libraries are loaded via `<script>` tags, such as Google Maps's API. These vendors typically expect you to embed them like so:
 
 ```html
-<script src='//maps.google.com/maps/api/js?v=3.1.3&libraries=geometry'></script>
+<script src='//maps.google.com/maps/api/js?v=3.1.3&amp;libraries=geometry'></script>
 ```
 
-If your website doesn't use them everywhere, it'd be wasteful to include them on every page. Instead, consider using [script.js] wrapped in a helper function to load them on an as-needed basis.
+```js
+$.onmount('.map-box', function () {
+  Gmaps.buildMap({ ... })
+})
+```
+
+If your website doesn't use them everywhere, it'd be wasteful to include them on every page. You can selectively include them only on pages that need them, but that would hamper reusability: if you want to reuse the `.map-box` component in another page, you'll need to re-include the script in that other page as well.
+
+Instead, consider using [script.js] wrapped in a helper function to load them on an as-needed basis.
 
 ```js
-function useGoogleMaps (fn) {
+Helpers.useGoogleMaps = function useGoogleMaps (fn) {
   var url = '//maps.google.com/maps/api/js?v=3.1.3&libraries=geometry'
 
   $script(url, function () {
-    // pass the global `gmaps` variable to the callback function.
-    fn(window.gmaps)
+    // pass the global `Gmaps` variable to the callback function.
+    fn(window.Gmaps)
   })
 }
 ```
 
-This helper can be used like so:
+This `useGoogleMaps` helper can be used like so:
 
 ```js
-useGoogleMaps(function (gmaps) {
-  // use `gmaps` here
+var useGoogleMaps = Helpers.useGoogleMaps
+
+$.onmount('.map-box', function () {
+  useGoogleMaps(function (Gmaps) {
+    Gmaps.buildMap({ ... }) // use Gmaps here
+  })
 })
 ```
 
