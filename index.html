@@ -32,11 +32,11 @@
 <p>For a typical non-<a href="https://en.wikipedia.org/wiki/Single-page_application">SPA</a> website, it will eventually be apparent that there needs to be conventions enforced for consistency. While <a href="https://github.com/airbnb/javascript">styleguides</a> cover coding styles, conventions on namespacing and file structures are usually absent.</p>
 <h3 id="the-jquery-soup-anti-pattern">The jQuery soup anti-pattern</h3>
 <p>You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s">&apos;blogpost.js&apos;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;author footnote&apos;</span>&gt;</span>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="pl-s">&apos;blogpost.js&apos;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;author footnote&apos;</span>&gt;</span>
   This article was written by
-  <span class="hljs-tag">&lt;<span class="pl-ent">a</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;profile-link&apos;</span> <span class="pl-e">href</span>=<span class="pl-s">&quot;/user/rstacruz&quot;</span>&gt;</span>Rico Sta. Cruz<span class="hljs-tag">&lt;/<span class="pl-ent">a</span>&gt;</span>.
-<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;profile-link&apos;</span> <span class="hljs-attr">href</span>=<span class="pl-s">&quot;/user/rstacruz&quot;</span>&gt;</span>Rico Sta. Cruz<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>.
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 <pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
   $(<span class="pl-s">&apos;.author a&apos;</span>).on(<span class="pl-s">&apos;hover&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
@@ -65,12 +65,12 @@
 <h3 id="think-in-component-behaviors">Think in component behaviors</h3>
 <p>Think that a piece of JavaScript code to will only affect 1 &#x201C;component&#x201D;, that is, a section in the DOM.</p>
 <p>There files are &#x201C;behaviors&#x201D;: code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS component <code>collapsible-nav</code> only affects a certain DOM subtree, and is placed on its own file.</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;main-navbar&apos;</span> <span class="pl-e">role</span>=<span class="pl-s">&apos;collapsible-nav&apos;</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="pl-ent">button</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;expand&apos;</span> <span class="pl-e">role</span>=<span class="pl-s">&apos;expand&apos;</span>&gt;</span>Expand<span class="hljs-tag">&lt;/<span class="pl-ent">button</span>&gt;</span>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;main-navbar&apos;</span> <span class="hljs-attr">role</span>=<span class="pl-s">&apos;collapsible-nav&apos;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;expand&apos;</span> <span class="hljs-attr">role</span>=<span class="pl-s">&apos;expand&apos;</span>&gt;</span>Expand<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 
-  <span class="hljs-tag">&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s">&apos;/&apos;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="pl-ent">a</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="pl-ent">ul</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">ul</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="pl-s">&apos;/&apos;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 <pre><code class="lang-js"><span class="pl-c">/* behaviors/collapsible-nav.js */</span>
 $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
@@ -107,11 +107,11 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 <p><em>Optional:</em> It&#x2019;s preferred to mark your component with a <code>role</code> attribute.</p>
 <p>You can use ID&#x2019;s and classes, but this can be confusing since it isn&#x2019;t obvious which class names are for styles and which have JS behaviors bound to them. This applies to elements inside the component too, such as buttons (see collapsible-nav example).</p>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- bad --&gt;</span>
-<span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;user-info&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 $(&apos;.user-info&apos;).on(&apos;hover&apos;, function() { ... });
 </code></pre>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- ok --&gt;</span>
-<span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;user-info&apos;</span> <span class="pl-e">role</span>=<span class="pl-s">&apos;avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span> <span class="hljs-attr">role</span>=<span class="pl-s">&apos;avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 $(&apos;[role~=&quot;avatar-popup&quot;]&apos;).on(&apos;hover&apos;, function() { ... });
 </code></pre>
 <h3 id="don&apos;t-overload-class-names">Don&#x2019;t overload class names</h3>
@@ -121,14 +121,14 @@ $(&apos;[role~=&quot;avatar-popup&quot;]&apos;).on(&apos;hover&apos;, function()
 Bad: is the JavaScript behavior attached to .user-info? or to
 .centered? This can be confusing developers unfamiliar with your code.
 --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;user-info centered&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info centered&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   $(&apos;.user-info&apos;).on(&apos;hover&apos;, function() { ... });
 
 <span class="pl-c">&lt;!--
 Better: this makes it more obvious to find the source of
 the behavior.
 --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s">&apos;user-info js-avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="pl-ent">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info js-avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   $(&apos;.js-avatar-popup&apos;).on(&apos;hover&apos;, function() { ... });
 </code></pre>
 <h2 id="writing-code">Writing code</h2>
@@ -274,7 +274,7 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 <h3 id="load-3rd-party-resources-asynchronously">Load 3rd-party resources asynchronously</h3>
 <p>For third-party resources that are loaded externally, consider loading them with an asynchronous loading mechanism such as <a href="https://github.com/ded/script.js/">script.js</a>.</p>
 <p>Some 3rd party libraries are loaded via <code>&lt;script&gt;</code> tags, such as Google Maps&#x2019;s API. These vendors typically expect you to embed them like so:</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s">&apos;//maps.google.com/maps/api/js?v=3.1.3&amp;amp;libraries=geometry&apos;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="pl-s">&apos;//maps.google.com/maps/api/js?v=3.1.3&amp;amp;libraries=geometry&apos;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
 <pre><code class="lang-js">$.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
   Gmaps.buildMap({ ... })
@@ -310,7 +310,7 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
 <li><a href="https://rscss.io">rscss.io</a> - reasonable system for CSS stylesheet structure</li>
 <li><a href="https://github.com/rstacruz/onmount">onmount</a> - for safe, idempotent JavaScript behaviors and easy Turbolinks support</li>
 <li><a href="https://github.com/ded/script.js/">script.js</a> - for loading external scripts</li>
-<li><a href="https://github.com/kossnocorp/role#use-role-attribute-ftw">kossnocorp/role</a>&apos;s explanation on using the <code>role</code> attribute</li>
+<li><a href="https://github.com/kossnocorp/role#use-role-attribute-ftw">kossnocorp/role</a>&#x2019;s explanation on using the <code>role</code> attribute</li>
 </ul>
 
         </div>
