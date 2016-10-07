@@ -44,10 +44,6 @@ This anti-pattern leads to many issues, which rsjs attempts to address.
 
  * **Lack of organization:** Making new behaviors gets confusing. (Do you make a new `.js` file for each page? Do you add them to the global `application.js`? How do you load them?)
 
-### About Rails
-
-This styleguide assumes Rails conventions of concatenating .js files. These don't apply to loaders like Browserify or RequireJS.
-
 ## In a nutshell
 
 RSJS makes JavaScript easy to maintain in a typical web application. All recommendations here have these goals in mind:
