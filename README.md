@@ -186,9 +186,10 @@ window.UserData = { email: 'john@gmail.com', id: 9283 }
 </script>
 ```
 
-If they can be used in a behavior, put that data inside the HTML element.
+If they're going to be used in a component, put that data inside the HTML element and let the behavior pick it up.
 
 ```html
+<!-- ✓ Used by the user-info behavior -->
 <div class='user-info' data-js-user-info='{"email":"john@gmail.com","id":9283}'>
 ```
 
