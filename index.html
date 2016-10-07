@@ -154,8 +154,9 @@ the behavior.
 <span class="pl-c1">window</span>.UserData = { email: <span class="pl-s">&apos;john@gmail.com&apos;</span>, id: <span class="hljs-number">9283</span> }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 </code></pre>
-<p>If they can be used in a behavior, put that data inside the HTML element.</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span> <span class="hljs-attr">data-js-user-info</span>=<span class="pl-s">&apos;{&quot;email&quot;:&quot;john@gmail.com&quot;,&quot;id&quot;:9283}&apos;</span>&gt;</span>
+<p>If they&#x2019;re going to be used in a component, put that data inside the HTML element and let the behavior pick it up.</p>
+<pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2713; Used by the user-info behavior --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span> <span class="hljs-attr">data-js-user-info</span>=<span class="pl-s">&apos;{&quot;email&quot;:&quot;john@gmail.com&quot;,&quot;id&quot;:9283}&apos;</span>&gt;</span>
 </code></pre>
 <p>If multiple components are going to use this data, put it in a meta tag in the <code>&lt;head&gt;</code> section.</p>
 <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
