@@ -51,9 +51,9 @@
                 "id": "load-components-in-all-pages"
               },
               {
-                "title": "Use the role attribute",
+                "title": "Use a data attribute",
                 "depth": 3,
-                "id": "use-the-role-attribute"
+                "id": "use-a-data-attribute"
               },
               {
                 "title": "Don't overload class names",
@@ -221,9 +221,9 @@
               "id": "load-components-in-all-pages"
             },
             {
-              "title": "Use the role attribute",
+              "title": "Use a data attribute",
               "depth": 3,
-              "id": "use-the-role-attribute"
+              "id": "use-a-data-attribute"
             },
             {
               "title": "Don't overload class names",
