@@ -48,15 +48,26 @@ This anti-pattern leads to many issues, which rsjs attempts to address.
 
 This styleguide assumes Rails conventions of concatenating .js files. These don't apply to loaders like Browserify or RequireJS.
 
+## In a nutshell
+
+RSJS makes JavaScript easy to maintain in a typical web application. All recommendations here have these goals in mind:
+
+- Keep your HTML _declarative_ (get rid of inline scripts).
+- Put all your _imperative_ code in JS files.
+- Reduce ambiguity by having straight-forward conventions.
+- HTML elements can be _components_ that have _behaviors_.
+- Behaviors apply JavaScript to a `[data-js-behavior-name]` selector.
+
 ## Structure
 
 ### Think in component behaviors
 
 Think that a piece of JavaScript code to will only affect 1 "component", that is, a section in the DOM.
 
-There files are "behaviors": code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS component `collapsible-nav` only affects a certain DOM subtree, and is placed on its own file.
+There files are "behaviors": code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS behavior `collapsible-nav` only affects a certain DOM subtree, and is placed on its own file.
 
 ```html
+<!-- Component -->
 <div class='main-navbar' data-js-collapsible-nav>
   <button class='expand' data-js-expand>Expand</button>
 
@@ -66,7 +77,8 @@ There files are "behaviors": code to describe dynamic JS behavior to affect a bl
 ```
 
 ```js
-/* behaviors/collapsible-nav.js */
+/* Behavior - behaviors/collapsible-nav.js */
+
 $(function () {
   var $nav = $('[data-js-collapsible-nav]')
   if (!$nav.length) return
