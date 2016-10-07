@@ -4,7 +4,7 @@
 
 > Reasonable System for JavaScript Structure
 
-:construction: This document is a work in progress. Please feel free to contest any of the points raised here in [the issues](https://github.com/rstacruz/rsjs/issues). Also see [rscss], a document on CSS conventions that follows a similar line of thinking.
+This document is a collection of guidelines on how to structure your JavaScript in a standard non-SPA web application. Also see [RSCSS], a document on CSS conventions that follows a similar line of thinking.
 
 ## Problem
 
@@ -420,7 +420,7 @@ As with every other guideline document out there, try out and find out what work
 
 ## Further reading
 
-- [rscss.io][rscss] - reasonable system for CSS stylesheet structure
+- [rscss.io][RSCSS] - reasonable system for CSS stylesheet structure
 - [onmount] - for safe, idempotent JavaScript behaviors and easy Turbolinks support
 - [script.js] - for loading external scripts
 
@@ -429,4 +429,4 @@ As with every other guideline document out there, try out and find out what work
 [extras]: extras.md
 [onmount]: https://github.com/rstacruz/onmount
 [script.js]: https://github.com/rstacruz/scriptjs/
-[rscss]: https://rscss.io
+[RSCSS]: http://rscss.io
