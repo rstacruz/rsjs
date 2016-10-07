@@ -59,8 +59,6 @@
 <p><strong>Lack of organization:</strong> Making new behaviors gets confusing. (Do you make a new <code>.js</code> file for each page? Do you add them to the global <code>application.js</code>? How do you load them?)</p>
 </li>
 </ul>
-<h3 id="about-rails">About Rails</h3>
-<p>This styleguide assumes Rails conventions of concatenating .js files. These don&#x2019;t apply to loaders like Browserify or RequireJS.</p>
 <h2 id="in-a-nutshell">In a nutshell</h2>
 <p>RSJS makes JavaScript easy to maintain in a typical web application. All recommendations here have these goals in mind:</p>
 <ul>
@@ -366,7 +364,7 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
 <pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;glob-loader!./behavior/**/*.js&apos;</span>)
 </code></pre>
 <p><strong><a href="http://brunch.io/">Brunch</a>:</strong> you can use <a href="https://www.npmjs.com/package/glob-brunch">glob-brunch</a>.</p>
-<pre><code class="lang-js">glob(<span class="pl-s">&apos;./behaviors/*&apos;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>))
+<pre><code class="lang-js">glob(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>))
 
 <span class="pl-c">/* brunch-config.js */</span>
   plugins: {
@@ -402,8 +400,6 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
                 <li class="menu-item -level-2"><a href="#the-jquery-soup-anti-pattern" class="link title link-the-jquery-soup-anti-pattern">The jQuery soup anti-pattern</a>
                 </li>
                 <li class="menu-item -level-2"><a href="#what's-wrong" class="link title link-what's-wrong">What's wrong?</a>
-                </li>
-                <li class="menu-item -level-2"><a href="#about-rails" class="link title link-about-rails">About Rails</a>
                 </li>
               </ul>
             </li>

@@ -22,11 +22,6 @@
                 "title": "What's wrong?",
                 "depth": 3,
                 "id": "what's-wrong"
-              },
-              {
-                "title": "About Rails",
-                "depth": 3,
-                "id": "about-rails"
               }
             ]
           },
@@ -219,11 +214,6 @@
               "title": "What's wrong?",
               "depth": 3,
               "id": "what's-wrong"
-            },
-            {
-              "title": "About Rails",
-              "depth": 3,
-              "id": "about-rails"
             }
           ]
         },
