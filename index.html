@@ -88,7 +88,7 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 </code></pre>
 <h3 id="one-component-per-file">One component per file</h3>
 <p>Each file should a self-contained piece of code that only affects a <em>single</em> element type.</p>
-<p>Keep them in your project&#x2019;s <code>behaviors/</code> path. Name these files according to the <code>data-js-___</code> names (<a href="#useadataattribute">see below</a>) or class names they affect.</p>
+<p>Keep them in your project&#x2019;s <code>behaviors/</code> path. Name these files according to the <code>data-js-___</code> names (<a href="#use-a-data-attribute">see below</a>) or class names they affect.</p>
 <pre><code>&#x2514;&#x2500;&#x2500; javascripts/
     &#x2514;&#x2500;&#x2500; behaviors/
         &#x251C;&#x2500;&#x2500; collapsible-nav.js
@@ -136,6 +136,17 @@ the behavior.
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info js-avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   $(&apos;.js-avatar-popup&apos;).on(&apos;hover&apos;, function () { ... })
 </code></pre>
+<h3 id="no-inline-scripts">No inline scripts</h3>
+<p>Anoid adding JavaScript thats inlined inside your HTML markup. This includes <code>&lt;script&gt;...&lt;/script&gt;</code> blocks and <code>onclick=&apos;...&apos;</code> event handlers.</p>
+<pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2717; Avoid --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  $(<span class="pl-s">&apos;button&apos;</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{ ... })
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2717; Avoid --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onload</span>=<span class="pl-s">&quot;loadup()&quot;</span>&gt;</span>
+</code></pre>
+<p>Prefer to use JS behaviors instead of inline scripts.</p>
 <h2 id="writing-code">Writing code</h2>
 <p>These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.</p>
 <h3 id="consider-using-onmount">Consider using onmount</h3>
@@ -348,6 +359,8 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
                 <li class="menu-item -level-2"><a href="#use-a-data-attribute" class="link title link-use-a-data-attribute">Use a data attribute</a>
                 </li>
                 <li class="menu-item -level-2"><a href="#don't-overload-class-names" class="link title link-don't-overload-class-names">Don't overload class names</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#no-inline-scripts" class="link title link-no-inline-scripts">No inline scripts</a>
                 </li>
               </ul>
             </li>

@@ -59,6 +59,11 @@
                 "title": "Don't overload class names",
                 "depth": 3,
                 "id": "don't-overload-class-names"
+              },
+              {
+                "title": "No inline scripts",
+                "depth": 3,
+                "id": "no-inline-scripts"
               }
             ]
           },
@@ -229,6 +234,11 @@
               "title": "Don't overload class names",
               "depth": 3,
               "id": "don't-overload-class-names"
+            },
+            {
+              "title": "No inline scripts",
+              "depth": 3,
+              "id": "no-inline-scripts"
             }
           ]
         },
