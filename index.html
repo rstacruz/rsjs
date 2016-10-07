@@ -61,18 +61,29 @@
 </ul>
 <h3 id="about-rails">About Rails</h3>
 <p>This styleguide assumes Rails conventions of concatenating .js files. These don&#x2019;t apply to loaders like Browserify or RequireJS.</p>
+<h2 id="in-a-nutshell">In a nutshell</h2>
+<p>RSJS makes JavaScript easy to maintain in a typical web application. All recommendations here have these goals in mind:</p>
+<ul>
+<li>Keep your HTML <em>declarative</em> (get rid of inline scripts).</li>
+<li>Put all your <em>imperative</em> code in JS files.</li>
+<li>Reduce ambiguity by having straight-forward conventions.</li>
+<li>HTML elements can be <em>components</em> that have <em>behaviors</em>.</li>
+<li>Behaviors apply JavaScript to a <code>[data-js-behavior-name]</code> selector.</li>
+</ul>
 <h2 id="structure">Structure</h2>
 <h3 id="think-in-component-behaviors">Think in component behaviors</h3>
 <p>Think that a piece of JavaScript code to will only affect 1 &#x201C;component&#x201D;, that is, a section in the DOM.</p>
-<p>There files are &#x201C;behaviors&#x201D;: code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS component <code>collapsible-nav</code> only affects a certain DOM subtree, and is placed on its own file.</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;main-navbar&apos;</span> <span class="hljs-attr">data-js-collapsible-nav</span>&gt;</span>
+<p>There files are &#x201C;behaviors&#x201D;: code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS behavior <code>collapsible-nav</code> only affects a certain DOM subtree, and is placed on its own file.</p>
+<pre><code class="lang-html"><span class="pl-c">&lt;!-- Component --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;main-navbar&apos;</span> <span class="hljs-attr">data-js-collapsible-nav</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;expand&apos;</span> <span class="hljs-attr">data-js-expand</span>&gt;</span>Expand<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 
   <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="pl-s">&apos;/&apos;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
-<pre><code class="lang-js"><span class="pl-c">/* behaviors/collapsible-nav.js */</span>
+<pre><code class="lang-js"><span class="pl-c">/* Behavior - behaviors/collapsible-nav.js */</span>
+
 $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
   <span class="pl-k">var</span> $nav = $(<span class="pl-s">&apos;[data-js-collapsible-nav]&apos;</span>)
   <span class="pl-k">if</span> (!$nav.length) <span class="pl-k">return</span>
@@ -376,6 +387,8 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
                 <li class="menu-item -level-2"><a href="#about-rails" class="link title link-about-rails">About Rails</a>
                 </li>
               </ul>
+            </li>
+            <li class="menu-item -level-1"><a href="#in-a-nutshell" class="link title link-in-a-nutshell">In a nutshell</a>
             </li>
             <li class="menu-item -level-1 -parent"><a href="#structure" class="link title link-structure">Structure</a>
               <ul class="submenu">
