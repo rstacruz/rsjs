@@ -138,7 +138,7 @@ the behavior.
 </code></pre>
 <h3 id="no-inline-scripts">No inline scripts</h3>
 <p>Anoid adding JavaScript thats inlined inside your HTML markup. This includes <code>&lt;script&gt;...&lt;/script&gt;</code> blocks and <code>onclick=&apos;...&apos;</code> event handlers.</p>
-<p>By putting imperative logic outside your JavaScript files (eg, JavaScript in your HTML), it makes your application harder to test and they pose a significant maintenance burden. Keep all your <em>imperative</em> code in your JS files, and your <em>declarative</em> code in your HTML.</p>
+<p>By putting imperative logic outside your <code>.js</code> files (eg, JavaScript in your <code>.html</code>), it makes your application harder to test and they pose a significant maintenance burden. Keep all your <em>imperative</em> code in your JS files, and your <em>declarative</em> code in your HTML.</p>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2717; Avoid --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
   $(<span class="pl-s">&apos;button&apos;</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{ ... })
@@ -169,6 +169,7 @@ the behavior.
   <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data:email&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&quot;john@gmail.com&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data:id&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&quot;9283&quot;</span>&gt;</span>
 </code></pre>
+<p>This keeps your HTML files declarative, and your JS files imperative. (Also see: <a href="http://latentflip.com/imperative-vs-declarative">Imperative vs. Declarative</a> from <a href="http://latentflip.com">latentflip.com</a>)</p>
 <pre><code class="lang-js"><span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">getMeta</span> (<span class="hljs-params">name</span>) </span>{
   <span class="pl-k">return</span> $(<span class="pl-s">&apos;meta[property=&apos;</span> + <span class="pl-c1">JSON</span>.stringify(name) + <span class="pl-s">&apos;]&apos;</span>).attr(<span class="pl-s">&apos;content&apos;</span>)
 }
