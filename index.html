@@ -114,6 +114,12 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 <pre><code class="lang-js"><span class="pl-c">// js/application.js</span>
 <span class="pl-c">/*= require_tree ./behaviors
 </span></code></pre>
+<p>In <a href="http://browserify.org/">Browserify</a>, you can use <a href="https://www.npmjs.com/package/require-globify">require-globify</a>.</p>
+<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, { mode: <span class="pl-s">&apos;expand&apos;</span> })
+</code></pre>
+<p>In Webpack, you can use <a href="https://www.npmjs.com/package/glob-loader">glob-loader</a>.</p>
+<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;glob-loader!./behavior/**/*.js&apos;</span>)
+</code></pre>
 <h3 id="use-a-data-attribute">Use a data attribute</h3>
 <p>It&#x2019;s preferred to mark your component with a <code>data-js-___</code> attribute.</p>
 <p>You can use ID&#x2019;s and classes, but this can be confusing since it isn&#x2019;t obvious which class names are for styles and which have JS behaviors bound to them. This applies to elements inside the component too, such as buttons (see collapsible-nav example).</p>
