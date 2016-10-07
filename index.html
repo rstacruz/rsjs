@@ -138,6 +138,7 @@ the behavior.
 </code></pre>
 <h3 id="no-inline-scripts">No inline scripts</h3>
 <p>Anoid adding JavaScript thats inlined inside your HTML markup. This includes <code>&lt;script&gt;...&lt;/script&gt;</code> blocks and <code>onclick=&apos;...&apos;</code> event handlers.</p>
+<p>By putting imperative logic outside your JavaScript files (eg, JavaScript in your HTML), it makes your application harder to test and they pose a significant maintenance burden. Keep all your <em>imperative</em> code in your JS files, and your <em>declarative</em> code in your HTML.</p>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2717; Avoid --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
   $(<span class="pl-s">&apos;button&apos;</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{ ... })
@@ -148,7 +149,7 @@ the behavior.
 </code></pre>
 <p>Prefer to use JS behaviors instead of inline scripts.</p>
 <h3 id="bootstrap-data-with-meta-tags">Bootstrap data with meta tags</h3>
-<p>A common pattern is to use inline <code>&lt;script&gt;</code> tags to leave data that scripts will pick up later on.</p>
+<p>A common pattern is to use inline <code>&lt;script&gt;</code> tags to leave data that scripts will pick up later on. In the spirit of <a href="#no-inline-scripts">avoiding inline scripts</a>, these patterns should  also be avoided.</p>
 <pre><code class="lang-js">&lt;!-- &#x2717; Avoid --&gt;
 <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
 <span class="pl-c1">window</span>.UserData = { email: <span class="pl-s">&apos;john@gmail.com&apos;</span>, id: <span class="hljs-number">9283</span> }
