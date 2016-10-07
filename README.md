@@ -161,6 +161,8 @@ the behavior.
 
 Anoid adding JavaScript thats inlined inside your HTML markup. This includes `<script>...</script>` blocks and `onclick='...'` event handlers.
 
+By putting imperative logic outside your JavaScript files (eg, JavaScript in your HTML), it makes your application harder to test and they pose a significant maintenance burden. Keep all your _imperative_ code in your JS files, and your _declarative_ code in your HTML.
+
 ```html
 <!-- ✗ Avoid -->
 <script>
@@ -177,7 +179,7 @@ Prefer to use JS behaviors instead of inline scripts.
 
 ### Bootstrap data with meta tags
 
-A common pattern is to use inline `<script>` tags to leave data that scripts will pick up later on.
+A common pattern is to use inline `<script>` tags to leave data that scripts will pick up later on. In the spirit of [avoiding inline scripts](#no-inline-scripts), these patterns should  also be avoided.
 
 ```js
 <!-- ✗ Avoid -->
