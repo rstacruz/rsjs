@@ -162,7 +162,7 @@ the behavior.
 
 ### No inline scripts
 
-Anoid adding JavaScript thats inlined inside your HTML markup. This includes `<script>...</script>` blocks and `onclick='...'` event handlers.
+Avoid adding JavaScript thats inlined inside your HTML markup. This includes `<script>...</script>` blocks and `onclick='...'` event handlers.
 
 By putting imperative logic outside your `.js` files (eg, JavaScript in your `.html`), it makes your application harder to test and they pose a significant maintenance burden. Keep all your _imperative_ code in your JS files, and your _declarative_ code in your HTML.
 
