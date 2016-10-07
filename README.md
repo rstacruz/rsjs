@@ -161,7 +161,7 @@ the behavior.
 
 Anoid adding JavaScript thats inlined inside your HTML markup. This includes `<script>...</script>` blocks and `onclick='...'` event handlers.
 
-By putting imperative logic outside your JavaScript files (eg, JavaScript in your HTML), it makes your application harder to test and they pose a significant maintenance burden. Keep all your _imperative_ code in your JS files, and your _declarative_ code in your HTML.
+By putting imperative logic outside your `.js` files (eg, JavaScript in your `.html`), it makes your application harder to test and they pose a significant maintenance burden. Keep all your _imperative_ code in your JS files, and your _declarative_ code in your HTML.
 
 ```html
 <!-- ✗ Avoid -->
@@ -207,6 +207,8 @@ If multiple components are going to use this data, put it in a meta tag in the `
   <meta property="app:user_data:email" content="john@gmail.com">
   <meta property="app:user_data:id" content="9283">
 ```
+
+This keeps your HTML files declarative, and your JS files imperative. (Also see: [Imperative vs. Declarative](http://latentflip.com/imperative-vs-declarative) from latentflip.com)
 
 ```js
 function getMeta (name) {
