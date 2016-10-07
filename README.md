@@ -502,7 +502,7 @@ require('glob-loader!./behavior/**/*.js')
 **[Brunch](http://brunch.io/):** you can use [glob-brunch](https://www.npmjs.com/package/glob-brunch).
 
 ```js
-glob('./behaviors/*', (e, files) => files.forEach(require))
+glob('./behaviors/**/*.js', (e, files) => files.forEach(require))
 
 /* brunch-config.js */
   plugins: {
