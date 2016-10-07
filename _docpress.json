@@ -64,6 +64,11 @@
                 "title": "No inline scripts",
                 "depth": 3,
                 "id": "no-inline-scripts"
+              },
+              {
+                "title": "Bootstrap data with meta tags",
+                "depth": 3,
+                "id": "bootstrap-data-with-meta-tags"
               }
             ]
           },
@@ -239,6 +244,11 @@
               "title": "No inline scripts",
               "depth": 3,
               "id": "no-inline-scripts"
+            },
+            {
+              "title": "Bootstrap data with meta tags",
+              "depth": 3,
+              "id": "bootstrap-data-with-meta-tags"
             }
           ]
         },

@@ -147,6 +147,32 @@ the behavior.
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onload</span>=<span class="pl-s">&quot;loadup()&quot;</span>&gt;</span>
 </code></pre>
 <p>Prefer to use JS behaviors instead of inline scripts.</p>
+<h3 id="bootstrap-data-with-meta-tags">Bootstrap data with meta tags</h3>
+<p>A common pattern is to use inline <code>&lt;script&gt;</code> tags to leave data that scripts will pick up later on.</p>
+<pre><code class="lang-js">&lt;!-- &#x2717; Avoid --&gt;
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="pl-c1">window</span>.UserData = { email: <span class="pl-s">&apos;john@gmail.com&apos;</span>, id: <span class="hljs-number">9283</span> }
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+<p>If they can be used in a behavior, put that data inside the HTML element.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span> <span class="hljs-attr">data-js-user-info</span>=<span class="pl-s">&apos;{&quot;email&quot;:&quot;john@gmail.com&quot;,&quot;id&quot;:9283}&apos;</span>&gt;</span>
+</code></pre>
+<p>If multiple components are going to use this data, put it in a meta tag in the <code>&lt;head&gt;</code> section.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  ...
+  <span class="pl-c">&lt;!-- option 1 --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&apos;{&quot;email&quot;:&quot;john@gmail.com&quot;,&quot;id&quot;:9283}&apos;</span>&gt;</span>
+
+  <span class="pl-c">&lt;!-- option 2 --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data:email&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&quot;john@gmail.com&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data:id&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&quot;9283&quot;</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-js"><span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">getMeta</span> (<span class="hljs-params">name</span>) </span>{
+  <span class="pl-k">return</span> $(<span class="pl-s">&apos;meta[property=&apos;</span> + <span class="pl-c1">JSON</span>.stringify(name) + <span class="pl-s">&apos;]&apos;</span>).attr(<span class="pl-s">&apos;content&apos;</span>)
+}
+
+getMeta(<span class="pl-s">&apos;app:user_data:email&apos;</span>)  <span class="pl-c">// =&gt; &apos;john@gmail.com&apos;</span>
+</code></pre>
 <h2 id="writing-code">Writing code</h2>
 <p>These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.</p>
 <h3 id="consider-using-onmount">Consider using onmount</h3>
@@ -361,6 +387,8 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
                 <li class="menu-item -level-2"><a href="#don't-overload-class-names" class="link title link-don't-overload-class-names">Don't overload class names</a>
                 </li>
                 <li class="menu-item -level-2"><a href="#no-inline-scripts" class="link title link-no-inline-scripts">No inline scripts</a>
+                </li>
+                <li class="menu-item -level-2"><a href="#bootstrap-data-with-meta-tags" class="link title link-bootstrap-data-with-meta-tags">Bootstrap data with meta tags</a>
                 </li>
               </ul>
             </li>
