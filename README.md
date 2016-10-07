@@ -85,7 +85,7 @@ $(function () {
 
 Each file should a self-contained piece of code that only affects a *single* element type.
 
-Keep them in your project's `behaviors/` path. Name these files according to the `data-js-___` names ([see below](#useadataattribute)) or class names they affect.
+Keep them in your project's `behaviors/` path. Name these files according to the `data-js-___` names ([see below](#use-a-data-attribute)) or class names they affect.
 
 ```
 └── javascripts/
