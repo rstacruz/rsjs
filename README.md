@@ -157,6 +157,24 @@ the behavior.
   $('.js-avatar-popup').on('hover', function () { ... })
 ```
 
+### No inline scripts
+
+Anoid adding JavaScript thats inlined inside your HTML markup. This includes `<script>...</script>` blocks and `onclick='...'` event handlers.
+
+```html
+<!-- ✗ Avoid -->
+<script>
+  $('button').on('click', function () { ... })
+</script>
+```
+
+```html
+<!-- ✗ Avoid -->
+<body onload="loadup()">
+```
+
+Prefer to use JS behaviors instead of inline scripts.
+
 ## Writing code
 
 These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.
