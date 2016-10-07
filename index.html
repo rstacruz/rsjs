@@ -110,16 +110,7 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 <h3 id="load-components-in-all-pages">Load components in all pages</h3>
 <p>Your main .js file should be a concatenation of all your <code>behaviors</code>.</p>
 <p>It should be safe to load all behaviors for all pages. Since your behaviors are localized to their respective components, they will not have any effect unless the element it applies to is on the page.</p>
-<p>In Rails, this can be accomplished with <code>require_tree</code>.</p>
-<pre><code class="lang-js"><span class="pl-c">// js/application.js</span>
-<span class="pl-c">/*= require_tree ./behaviors
-</span></code></pre>
-<p>In <a href="http://browserify.org/">Browserify</a>, you can use <a href="https://www.npmjs.com/package/require-globify">require-globify</a>.</p>
-<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, { mode: <span class="pl-s">&apos;expand&apos;</span> })
-</code></pre>
-<p>In Webpack, you can use <a href="https://www.npmjs.com/package/glob-loader">glob-loader</a>.</p>
-<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;glob-loader!./behavior/**/*.js&apos;</span>)
-</code></pre>
+<p>See <a href="#loading-component-files">loading component files</a> for guides on how to do this for your project.</p>
 <h3 id="use-a-data-attribute">Use a data attribute</h3>
 <p>It&#x2019;s preferred to mark your component with a <code>data-js-___</code> attribute.</p>
 <p>You can use ID&#x2019;s and classes, but this can be confusing since it isn&#x2019;t obvious which class names are for styles and which have JS behaviors bound to them. This applies to elements inside the component too, such as buttons (see collapsible-nav example).</p>
@@ -362,6 +353,28 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
   })
 })
 </code></pre>
+<h2 id="appendix">Appendix</h2>
+<h3 id="loading-component-files">Loading component files</h3>
+<p><strong>Rails:</strong> this can be accomplished with <code>require_tree</code>.</p>
+<pre><code class="lang-js"><span class="pl-c">// js/application.js</span>
+<span class="pl-c">/*= require_tree ./behaviors
+</span></code></pre>
+<p><strong><a href="http://browserify.org/">Browserify</a>:</strong> you can use <a href="https://www.npmjs.com/package/require-globify">require-globify</a>.</p>
+<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, { mode: <span class="pl-s">&apos;expand&apos;</span> })
+</code></pre>
+<p><strong><a href="https://webpack.github.io/">Webpack</a>:</strong> you can use <a href="https://www.npmjs.com/package/glob-loader">glob-loader</a>.</p>
+<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;glob-loader!./behavior/**/*.js&apos;</span>)
+</code></pre>
+<p><strong><a href="http://brunch.io/">Brunch</a>:</strong> you can use <a href="https://www.npmjs.com/package/glob-brunch">glob-brunch</a>.</p>
+<pre><code class="lang-js">glob(<span class="pl-s">&apos;./behaviors/*&apos;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>))
+
+<span class="pl-c">/* brunch-config.js */</span>
+  plugins: {
+    glob: {
+      appDir: <span class="pl-s">&apos;...&apos;</span>
+    }
+  }
+</code></pre>
 <h2 id="conclusion">Conclusion</h2>
 <p>This document is a result of my own trial-and-error across many projects, finding out what patterns are worth adhering to on the next project.</p>
 <p>This document prioritizes developer sanity first. The approaches here may not have the most performant, especially given its preference for event delegations and running <code>document.ready</code> code for pages that don&#x2019;t need it. Regardless, the pros and cons were weighed and ultimately favored approaches that would be maintainable in the long run.</p>
@@ -447,6 +460,12 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
                 <li class="menu-item -level-2"><a href="#separate-your-vendor-libs" class="link title link-separate-your-vendor-libs">Separate your vendor libs</a>
                 </li>
                 <li class="menu-item -level-2"><a href="#load-3rd-party-resources-asynchronously" class="link title link-load-3rd-party-resources-asynchronously">Load 3rd-party resources asynchronously</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><a href="#appendix" class="link title link-appendix">Appendix</a>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="#loading-component-files" class="link title link-loading-component-files">Loading component files</a>
                 </li>
               </ul>
             </li>

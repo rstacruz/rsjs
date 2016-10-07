@@ -156,6 +156,18 @@
             ]
           },
           {
+            "title": "Appendix",
+            "depth": 2,
+            "id": "appendix",
+            "headings": [
+              {
+                "title": "Loading component files",
+                "depth": 3,
+                "id": "loading-component-files"
+              }
+            ]
+          },
+          {
             "title": "Conclusion",
             "depth": 2,
             "id": "conclusion"
@@ -337,6 +349,18 @@
               "title": "Load 3rd-party resources asynchronously",
               "depth": 3,
               "id": "load-3rd-party-resources-asynchronously"
+            }
+          ]
+        },
+        {
+          "title": "Appendix",
+          "depth": 2,
+          "id": "appendix",
+          "headings": [
+            {
+              "title": "Loading component files",
+              "depth": 3,
+              "id": "loading-component-files"
             }
           ]
         },
