@@ -114,24 +114,7 @@ Your main .js file should be a concatenation of all your `behaviors`.
 
 It should be safe to load all behaviors for all pages. Since your behaviors are localized to their respective components, they will not have any effect unless the element it applies to is on the page.
 
-In Rails, this can be accomplished with `require_tree`.
-
-```js
-// js/application.js
-/*= require_tree ./behaviors
-```
-
-In [Browserify](http://browserify.org/), you can use [require-globify](https://www.npmjs.com/package/require-globify).
-
-```js
-require('./behaviors/**/*.js', { mode: 'expand' })
-```
-
-In Webpack, you can use [glob-loader](https://www.npmjs.com/package/glob-loader).
-
-```js
-require('glob-loader!./behavior/**/*.js')
-```
+See [loading component files](#loading-component-files) for guides on how to do this for your project.
 
 ### Use a data attribute
 
@@ -491,6 +474,42 @@ $.onmount('.map-box', function () {
     Gmaps.buildMap({ ... }) // use Gmaps here
   })
 })
+```
+
+## Appendix
+
+### Loading component files
+
+**Rails:** this can be accomplished with `require_tree`.
+
+```js
+// js/application.js
+/*= require_tree ./behaviors
+```
+
+**[Browserify](http://browserify.org/):** you can use [require-globify](https://www.npmjs.com/package/require-globify).
+
+```js
+require('./behaviors/**/*.js', { mode: 'expand' })
+```
+
+**[Webpack](https://webpack.github.io/):** you can use [glob-loader](https://www.npmjs.com/package/glob-loader).
+
+```js
+require('glob-loader!./behavior/**/*.js')
+```
+
+**[Brunch](http://brunch.io/):** you can use [glob-brunch](https://www.npmjs.com/package/glob-brunch).
+
+```js
+glob('./behaviors/*', (e, files) => files.forEach(require))
+
+/* brunch-config.js */
+  plugins: {
+    glob: {
+      appDir: '...'
+    }
+  }
 ```
 
 ## Conclusion
