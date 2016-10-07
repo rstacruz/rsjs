@@ -175,6 +175,44 @@ Anoid adding JavaScript thats inlined inside your HTML markup. This includes `<s
 
 Prefer to use JS behaviors instead of inline scripts.
 
+### Bootstrap data with meta tags
+
+A common pattern is to use inline `<script>` tags to leave data that scripts will pick up later on.
+
+```js
+<!-- ✗ Avoid -->
+<script>
+window.UserData = { email: 'john@gmail.com', id: 9283 }
+</script>
+```
+
+If they can be used in a behavior, put that data inside the HTML element.
+
+```html
+<div class='user-info' data-js-user-info='{"email":"john@gmail.com","id":9283}'>
+```
+
+If multiple components are going to use this data, put it in a meta tag in the `<head>` section.
+
+```html
+<head>
+  ...
+  <!-- option 1 -->
+  <meta property="app:user_data" content='{"email":"john@gmail.com","id":9283}'>
+
+  <!-- option 2 -->
+  <meta property="app:user_data:email" content="john@gmail.com">
+  <meta property="app:user_data:id" content="9283">
+```
+
+```js
+function getMeta (name) {
+  return $('meta[property=' + JSON.stringify(name) + ']').attr('content')
+}
+
+getMeta('app:user_data:email')  // => 'john@gmail.com'
+```
+
 ## Writing code
 
 These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.
