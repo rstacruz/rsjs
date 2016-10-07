@@ -121,6 +121,18 @@ In Rails, this can be accomplished with `require_tree`.
 /*= require_tree ./behaviors
 ```
 
+In [Browserify](http://browserify.org/), you can use [require-globify](https://www.npmjs.com/package/require-globify).
+
+```js
+require('./behaviors/**/*.js', { mode: 'expand' })
+```
+
+In Webpack, you can use [glob-loader](https://www.npmjs.com/package/glob-loader).
+
+```js
+require('glob-loader!./behavior/**/*.js')
+```
+
 ### Use a data attribute
 
 It's preferred to mark your component with a `data-js-___` attribute.
