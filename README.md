@@ -476,7 +476,7 @@ $.onmount('.map-box', function () {
 
 ### Loading component files
 
-**Rails:** this can be accomplished with `require_tree`.
+**[Rails](http://rubyonrails.org/):** this can be accomplished with the asset pipeline's built-in `require_tree`.
 
 ```js
 // js/application.js
@@ -492,7 +492,7 @@ require('./behaviors/**/*.js', { mode: 'expand' })
 **[Webpack](https://webpack.github.io/):** you can use [glob-loader](https://www.npmjs.com/package/glob-loader).
 
 ```js
-require('glob-loader!./behavior/**/*.js')
+require('glob-loader!./behaviors/**/*.js')
 ```
 
 **[Brunch](http://brunch.io/):** you can use [glob-brunch](https://www.npmjs.com/package/glob-brunch).
