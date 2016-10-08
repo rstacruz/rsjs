@@ -353,7 +353,7 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
 </code></pre>
 <h2 id="appendix">Appendix</h2>
 <h3 id="loading-component-files">Loading component files</h3>
-<p><strong>Rails:</strong> this can be accomplished with <code>require_tree</code>.</p>
+<p><strong><a href="http://rubyonrails.org/">Rails</a>:</strong> this can be accomplished with the asset pipeline&#x2019;s built-in <code>require_tree</code>.</p>
 <pre><code class="lang-js"><span class="pl-c">// js/application.js</span>
 <span class="pl-c">/*= require_tree ./behaviors
 </span></code></pre>
@@ -361,7 +361,7 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
 <pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, { mode: <span class="pl-s">&apos;expand&apos;</span> })
 </code></pre>
 <p><strong><a href="https://webpack.github.io/">Webpack</a>:</strong> you can use <a href="https://www.npmjs.com/package/glob-loader">glob-loader</a>.</p>
-<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;glob-loader!./behavior/**/*.js&apos;</span>)
+<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;glob-loader!./behaviors/**/*.js&apos;</span>)
 </code></pre>
 <p><strong><a href="http://brunch.io/">Brunch</a>:</strong> you can use <a href="https://www.npmjs.com/package/glob-brunch">glob-brunch</a>.</p>
 <pre><code class="lang-js">glob(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>))
