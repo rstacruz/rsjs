@@ -119,13 +119,13 @@ It's preferred to mark your component with a `data-js-___` attribute.
 You can use ID's and classes, but this can be confusing since it isn't obvious which class names are for styles and which have JS behaviors bound to them. This applies to elements inside the component too, such as buttons (see collapsible-nav example).
 
 ```html
-<!-- bad -->
+<!-- ✗ Avoid using class names -->
 <div class='user-info'>...</div>
 $('.user-info').on('hover', function () { ... })
 ```
 
 ```html
-<!-- ok -->
+<!-- ✓ Better to use data-js attributes -->
 <div class='user-info' data-js-avatar-popup>...</div>
 $('[data-js-avatar-popup]').on('hover', function () { ... })
 ```
@@ -133,7 +133,7 @@ $('[data-js-avatar-popup]').on('hover', function () { ... })
 You can also provide values for these attributes.
 
 ```html
-<!-- ok -->
+<!-- ✓ Attributes with values -->
 <button data-js-tooltip='Close'>...</button>
 $('[data-js-tooltip]').on('hover', function () { ... })
 ```
@@ -146,14 +146,14 @@ This will also make it easier to restyle components as needed.
 
 ```html
 <!--
-Bad: is the JavaScript behavior attached to .user-info? or to
+✗ Bad: is the JavaScript behavior attached to .user-info? or to
 .centered? This can be confusing developers unfamiliar with your code.
 -->
   <div class='user-info centered'>...</div>
   $('.user-info').on('hover', function () { ... })
 
 <!--
-Better: this makes it more obvious to find the source of
+✓ Better: this makes it more obvious to find the source of
 the behavior.
 -->
   <div class='user-info js-avatar-popup'>...</div>
@@ -230,7 +230,7 @@ These are conventions that can be handled by other libraries. For straight jQuer
 [onmount] is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it'd allow you to write better unit tests.
 
 ```js
-$.onmount('.js-push-button', function () {
+$.onmount('[data-js-push-button]', function () {
   $(this).on('click', function () {
     alert('working...')
   })
