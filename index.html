@@ -112,16 +112,16 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 <h3 id="use-a-data-attribute">Use a data attribute</h3>
 <p>It&#x2019;s preferred to mark your component with a <code>data-js-___</code> attribute.</p>
 <p>You can use ID&#x2019;s and classes, but this can be confusing since it isn&#x2019;t obvious which class names are for styles and which have JS behaviors bound to them. This applies to elements inside the component too, such as buttons (see collapsible-nav example).</p>
-<pre><code class="lang-html"><span class="pl-c">&lt;!-- bad --&gt;</span>
+<pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2717; Avoid using class names --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 $(&apos;.user-info&apos;).on(&apos;hover&apos;, function () { ... })
 </code></pre>
-<pre><code class="lang-html"><span class="pl-c">&lt;!-- ok --&gt;</span>
+<pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2713; Better to use data-js attributes --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span> <span class="hljs-attr">data-js-avatar-popup</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 $(&apos;[data-js-avatar-popup]&apos;).on(&apos;hover&apos;, function () { ... })
 </code></pre>
 <p>You can also provide values for these attributes.</p>
-<pre><code class="lang-html"><span class="pl-c">&lt;!-- ok --&gt;</span>
+<pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2713; Attributes with values --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">data-js-tooltip</span>=<span class="pl-s">&apos;Close&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 $(&apos;[data-js-tooltip]&apos;).on(&apos;hover&apos;, function () { ... })
 </code></pre>
@@ -129,14 +129,14 @@ $(&apos;[data-js-tooltip]&apos;).on(&apos;hover&apos;, function () { ... })
 <p>If you don&#x2019;t like <code>data-js-*</code> attributes and prefer classes, don&#x2019;t add styles to the classes that your JS uses. For instance, if you&#x2019;re styling a <code>.user-info</code> class, don&#x2019;t attach an event to it; instead, add another class name (eg, <code>.js-user-info</code>) to use in your JS.</p>
 <p>This will also make it easier to restyle components as needed.</p>
 <pre><code class="lang-html"><span class="pl-c">&lt;!--
-Bad: is the JavaScript behavior attached to .user-info? or to
+&#x2717; Bad: is the JavaScript behavior attached to .user-info? or to
 .centered? This can be confusing developers unfamiliar with your code.
 --&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info centered&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   $(&apos;.user-info&apos;).on(&apos;hover&apos;, function () { ... })
 
 <span class="pl-c">&lt;!--
-Better: this makes it more obvious to find the source of
+&#x2713; Better: this makes it more obvious to find the source of
 the behavior.
 --&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info js-avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
@@ -186,7 +186,7 @@ getMeta(<span class="pl-s">&apos;app:user_data:email&apos;</span>)  <span class=
 <p>These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.</p>
 <h3 id="consider-using-onmount">Consider using onmount</h3>
 <p><a href="https://github.com/rstacruz/onmount">onmount</a> is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it&#x2019;d allow you to write better unit tests.</p>
-<pre><code class="lang-js">$.onmount(<span class="pl-s">&apos;.js-push-button&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+<pre><code class="lang-js">$.onmount(<span class="pl-s">&apos;[data-js-push-button]&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
   $(<span class="pl-k">this</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
     alert(<span class="pl-s">&apos;working...&apos;</span>)
   })
