@@ -481,24 +481,31 @@ $.onmount('.map-box', function () {
 ```js
 // js/application.js
 /*= require_tree ./behaviors
+/*= require_tree ./initializers
 ```
 
 **[Browserify](http://browserify.org/):** you can use [require-globify](https://www.npmjs.com/package/require-globify).
 
 ```js
 require('./behaviors/**/*.js', { mode: 'expand' })
+require('./initializers/**/*.js', { mode: 'expand' })
 ```
 
-**[Webpack](https://webpack.github.io/):** you can use [glob-loader](https://www.npmjs.com/package/glob-loader).
+**[Webpack](https://webpack.github.io/):** you can use `require.context` to load multiple CSS files. See [this StackOverflow answer](http://stackoverflow.com/a/30652110/873870) for details.
 
 ```js
-require('glob-loader!./behaviors/**/*.js')
+// http://stackoverflow.com/a/30652110/873870
+function requireAll (r) { r.keys().forEach(r) }
+
+requireAll(require.context('./behaviors/', true, /\.js$/))
+requireAll(require.context('./initializers/', true, /\.js$/))
 ```
 
 **[Brunch](http://brunch.io/):** you can use [glob-brunch](https://www.npmjs.com/package/glob-brunch).
 
 ```js
 glob('./behaviors/**/*.js', (e, files) => files.forEach(require))
+glob('./initializers/**/*.js', (e, files) => files.forEach(require))
 
 /* brunch-config.js */
   plugins: {
