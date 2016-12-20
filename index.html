@@ -356,15 +356,22 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
 <p><strong><a href="http://rubyonrails.org/">Rails</a>:</strong> this can be accomplished with the asset pipeline&#x2019;s built-in <code>require_tree</code>.</p>
 <pre><code class="lang-js"><span class="pl-c">// js/application.js</span>
 <span class="pl-c">/*= require_tree ./behaviors
-</span></code></pre>
+<span class="pl-c">/*= require_tree ./initializers
+</span></span></code></pre>
 <p><strong><a href="http://browserify.org/">Browserify</a>:</strong> you can use <a href="https://www.npmjs.com/package/require-globify">require-globify</a>.</p>
 <pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, { mode: <span class="pl-s">&apos;expand&apos;</span> })
+<span class="pl-c1">require</span>(<span class="pl-s">&apos;./initializers/**/*.js&apos;</span>, { mode: <span class="pl-s">&apos;expand&apos;</span> })
 </code></pre>
-<p><strong><a href="https://webpack.github.io/">Webpack</a>:</strong> you can use <a href="https://www.npmjs.com/package/glob-loader">glob-loader</a>.</p>
-<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;glob-loader!./behaviors/**/*.js&apos;</span>)
+<p><strong><a href="https://webpack.github.io/">Webpack</a>:</strong> you can use <code>require.context</code> to load multiple CSS files. See <a href="http://stackoverflow.com/a/30652110/873870">this StackOverflow answer</a> for details.</p>
+<pre><code class="lang-js"><span class="pl-c">// http://stackoverflow.com/a/30652110/873870</span>
+<span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">requireAll</span> (<span class="hljs-params">r</span>) </span>{ r.keys().forEach(r) }
+
+requireAll(<span class="pl-c1">require</span>.context(<span class="pl-s">&apos;./behaviors/&apos;</span>, <span class="pl-c1">true</span>, <span class="hljs-regexp">/\.js$/</span>))
+requireAll(<span class="pl-c1">require</span>.context(<span class="pl-s">&apos;./initializers/&apos;</span>, <span class="pl-c1">true</span>, <span class="hljs-regexp">/\.js$/</span>))
 </code></pre>
 <p><strong><a href="http://brunch.io/">Brunch</a>:</strong> you can use <a href="https://www.npmjs.com/package/glob-brunch">glob-brunch</a>.</p>
 <pre><code class="lang-js">glob(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>))
+glob(<span class="pl-s">&apos;./initializers/**/*.js&apos;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>))
 
 <span class="pl-c">/* brunch-config.js */</span>
   plugins: {
