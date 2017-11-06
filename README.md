@@ -491,7 +491,7 @@ require('./behaviors/**/*.js', { mode: 'expand' })
 require('./initializers/**/*.js', { mode: 'expand' })
 ```
 
-**[Webpack](https://webpack.github.io/):** you can use `require.context` to load multiple CSS files. See [this StackOverflow answer](http://stackoverflow.com/a/30652110/873870) for details.
+**[Webpack](https://webpack.github.io/):** you can use `require.context` to load multiple JS files. See [this StackOverflow answer](http://stackoverflow.com/a/30652110/873870) for details.
 
 ```js
 // http://stackoverflow.com/a/30652110/873870
