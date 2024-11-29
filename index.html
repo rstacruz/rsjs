@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="assets/style.css?t=a44c9e9d">
     <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
-    <script src="assets/script.js?t=2bcc4b59"></script>
+    <script src="assets/script.js?t=820b7ffa"></script>
     <title>rsjs</title>
     <meta name="viewport" content="width=device-width">
     <script>
@@ -27,24 +27,24 @@
 <blockquote>
 <p>Reasonable System for JavaScript Structure</p>
 </blockquote>
-<p>This document is a collection of guidelines on how to structure your JavaScript in a standard non-SPA web application. Also see <a href="http://rscss.io">RSCSS</a>, a document on CSS conventions that follows a similar line of thinking.</p>
+<p>This document is a collection of guidelines on how to structure your JavaScript in a standard non-SPA web application. Also see <a href="https://rstacruz.github.io/rscss/">rscss</a>, a document on CSS conventions that follows a similar line of thinking.</p>
 <h2 id="problem">Problem</h2>
 <p>For a typical non-<a href="https://en.wikipedia.org/wiki/Single-page_application">SPA</a> website, it will eventually be apparent that there needs to be conventions enforced for consistency. While <a href="https://github.com/airbnb/javascript">styleguides</a> cover coding styles, conventions on namespacing and file structures are usually absent.</p>
 <h3 id="the-jquery-soup-anti-pattern">The jQuery soup anti-pattern</h3>
 <p>You will typically see Rails projects with behaviors randomly attached to classes, such as the problematic example below.</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="pl-s">&apos;blogpost.js&apos;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;author footnote&apos;</span>&gt;</span>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="pl-s">&quot;blogpost.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&quot;author footnote&quot;</span>&gt;</span>
   This article was written by
-  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;profile-link&apos;</span> <span class="hljs-attr">href</span>=<span class="pl-s">&quot;/user/rstacruz&quot;</span>&gt;</span>Rico Sta. Cruz<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>.
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="pl-s">&quot;profile-link&quot;</span> <span class="hljs-attr">href</span>=<span class="pl-s">&quot;/user/rstacruz&quot;</span>&gt;</span>Rico Sta. Cruz<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>.
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 <pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-  $(<span class="pl-s">&apos;.author a&apos;</span>).on(<span class="pl-s">&apos;hover&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="pl-k">var</span> username = $(<span class="pl-k">this</span>).attr(<span class="pl-s">&apos;href&apos;</span>)
+  $(<span class="pl-s">&quot;.author a&quot;</span>).on(<span class="pl-s">&quot;hover&quot;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">var</span> username = $(<span class="pl-k">this</span>).attr(<span class="pl-s">&quot;href&quot;</span>);
 
-    showTooltipProfile(username, { below: $(<span class="pl-k">this</span>) })
-  })
-})
+    showTooltipProfile(username, { below: $(<span class="pl-k">this</span>) });
+  });
+});
 </code></pre>
 <h3 id="what&apos;s-wrong">What&#x2019;s wrong?</h3>
 <p>This anti-pattern leads to many issues, which rsjs attempts to address.</p>
@@ -73,27 +73,29 @@
 <p>Think that a piece of JavaScript code to will only affect 1 &#x201C;component&#x201D;, that is, a section in the DOM.</p>
 <p>There files are &#x201C;behaviors&#x201D;: code to describe dynamic JS behavior to affect a block of static HTML. In this example, the JS behavior <code>collapsible-nav</code> only affects a certain DOM subtree, and is placed on its own file.</p>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- Component --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;main-navbar&apos;</span> <span class="hljs-attr">data-js-collapsible-nav</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;expand&apos;</span> <span class="hljs-attr">data-js-expand</span>&gt;</span>Expand<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&quot;main-navbar&quot;</span> <span class="hljs-attr">data-js-collapsible-nav</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="pl-s">&quot;expand&quot;</span> <span class="hljs-attr">data-js-expand</span>&gt;</span>Expand<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 
-  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="pl-s">&apos;/&apos;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="pl-s">&quot;/&quot;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+    ...
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 <pre><code class="lang-js"><span class="pl-c">/* Behavior - behaviors/collapsible-nav.js */</span>
 
 $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="pl-k">var</span> $nav = $(<span class="pl-s">&apos;[data-js-collapsible-nav]&apos;</span>)
-  <span class="pl-k">if</span> (!$nav.length) <span class="pl-k">return</span>
+  <span class="pl-k">var</span> $nav = $(<span class="pl-s">&quot;[data-js-collapsible-nav]&quot;</span>);
+  <span class="pl-k">if</span> (!$nav.length) <span class="pl-k">return</span>;
 
   $nav
-    .on(<span class="pl-s">&apos;click&apos;</span>, <span class="pl-s">&apos;[data-js-expand]&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-      $nav.addClass(<span class="pl-s">&apos;-expanded&apos;</span>)
+    .on(<span class="pl-s">&quot;click&quot;</span>, <span class="pl-s">&quot;[data-js-expand]&quot;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+      $nav.addClass(<span class="pl-s">&quot;-expanded&quot;</span>);
     })
-    .on(<span class="pl-s">&apos;mouseout&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-      $nav.removeClass(<span class="pl-s">&apos;-expanded&apos;</span>)
-    })
-})
+    .on(<span class="pl-s">&quot;mouseout&quot;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+      $nav.removeClass(<span class="pl-s">&quot;-expanded&quot;</span>);
+    });
+});
 </code></pre>
 <h3 id="one-component-per-file">One component per file</h3>
 <p>Each file should a self-contained piece of code that only affects a <em>single</em> element type.</p>
@@ -113,16 +115,16 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 <p>It&#x2019;s preferred to mark your component with a <code>data-js-___</code> attribute.</p>
 <p>You can use ID&#x2019;s and classes, but this can be confusing since it isn&#x2019;t obvious which class names are for styles and which have JS behaviors bound to them. This applies to elements inside the component too, such as buttons (see collapsible-nav example).</p>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2717; Avoid using class names --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&quot;user-info&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 $(&apos;.user-info&apos;).on(&apos;hover&apos;, function () { ... })
 </code></pre>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2713; Better to use data-js attributes --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span> <span class="hljs-attr">data-js-avatar-popup</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&quot;user-info&quot;</span> <span class="hljs-attr">data-js-avatar-popup</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 $(&apos;[data-js-avatar-popup]&apos;).on(&apos;hover&apos;, function () { ... })
 </code></pre>
 <p>You can also provide values for these attributes.</p>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2713; Attributes with values --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">data-js-tooltip</span>=<span class="pl-s">&apos;Close&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">data-js-tooltip</span>=<span class="pl-s">&quot;Close&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 $(&apos;[data-js-tooltip]&apos;).on(&apos;hover&apos;, function () { ... })
 </code></pre>
 <h3 id="don&apos;t-overload-class-names">Don&#x2019;t overload class names</h3>
@@ -132,15 +134,15 @@ $(&apos;[data-js-tooltip]&apos;).on(&apos;hover&apos;, function () { ... })
 &#x2717; Bad: is the JavaScript behavior attached to .user-info? or to
 .centered? This can be confusing developers unfamiliar with your code.
 --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info centered&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  $(&apos;.user-info&apos;).on(&apos;hover&apos;, function () { ... })
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&quot;user-info centered&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+$(&apos;.user-info&apos;).on(&apos;hover&apos;, function () { ... })
 
 <span class="pl-c">&lt;!--
 &#x2713; Better: this makes it more obvious to find the source of
 the behavior.
 --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info js-avatar-popup&apos;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  $(&apos;.js-avatar-popup&apos;).on(&apos;hover&apos;, function () { ... })
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&quot;user-info js-avatar-popup&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+$(&apos;.js-avatar-popup&apos;).on(&apos;hover&apos;, function () { ... })
 </code></pre>
 <h3 id="no-inline-scripts">No inline scripts</h3>
 <p>Avoid adding JavaScript thats inlined inside your HTML markup. This includes <code>&lt;script&gt;...&lt;/script&gt;</code> blocks and <code>onclick=&apos;...&apos;</code> event handlers.</p>
@@ -151,11 +153,11 @@ the behavior.
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2717; Avoid --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onload</span>=<span class="pl-s">&quot;loadup()&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onload</span>=<span class="pl-s">&quot;loadup()&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 </code></pre>
 <p>Prefer to use JS behaviors instead of inline scripts.</p>
 <h3 id="bootstrap-data-with-meta-tags">Bootstrap data with meta tags</h3>
-<p>A common pattern is to use inline <code>&lt;script&gt;</code> tags to leave data that scripts will pick up later on. In the spirit of <a href="#no-inline-scripts">avoiding inline scripts</a>, these patterns should  also be avoided.</p>
+<p>A common pattern is to use inline <code>&lt;script&gt;</code> tags to leave data that scripts will pick up later on. In the spirit of <a href="#no-inline-scripts">avoiding inline scripts</a>, these patterns should also be avoided.</p>
 <pre><code class="lang-js">&lt;!-- &#x2717; Avoid --&gt;
 <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
 <span class="pl-c1">window</span>.UserData = { email: <span class="pl-s">&apos;john@gmail.com&apos;</span>, id: <span class="hljs-number">9283</span> }
@@ -163,85 +165,92 @@ the behavior.
 </code></pre>
 <p>If they&#x2019;re going to be used in a component, put that data inside the HTML element and let the behavior pick it up.</p>
 <pre><code class="lang-html"><span class="pl-c">&lt;!-- &#x2713; Used by the user-info behavior --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="pl-s">&apos;user-info&apos;</span> <span class="hljs-attr">data-js-user-info</span>=<span class="pl-s">&apos;{&quot;email&quot;:&quot;john@gmail.com&quot;,&quot;id&quot;:9283}&apos;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+  <span class="hljs-attr">class</span>=<span class="pl-s">&quot;user-info&quot;</span>
+  <span class="hljs-attr">data-js-user-info</span>=<span class="pl-s">&apos;{&quot;email&quot;:&quot;john@gmail.com&quot;,&quot;id&quot;:9283}&apos;</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 <p>If multiple components are going to use this data, put it in a meta tag in the <code>&lt;head&gt;</code> section.</p>
 <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
   ...
   <span class="pl-c">&lt;!-- option 1 --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&apos;{&quot;email&quot;:&quot;john@gmail.com&quot;,&quot;id&quot;:9283}&apos;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span>
+    <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data&quot;</span>
+    <span class="hljs-attr">content</span>=<span class="pl-s">&apos;{&quot;email&quot;:&quot;john@gmail.com&quot;,&quot;id&quot;:9283}&apos;</span>
+  /&gt;</span>
 
   <span class="pl-c">&lt;!-- option 2 --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data:email&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&quot;john@gmail.com&quot;</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data:id&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&quot;9283&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data:email&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&quot;john@gmail.com&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">property</span>=<span class="pl-s">&quot;app:user_data:id&quot;</span> <span class="hljs-attr">content</span>=<span class="pl-s">&quot;9283&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 </code></pre>
 <p>This keeps your HTML files declarative, and your JS files imperative. (Also see: <a href="http://latentflip.com/imperative-vs-declarative">Imperative vs. Declarative</a> from <a href="http://latentflip.com">latentflip.com</a>)</p>
-<pre><code class="lang-js"><span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">getMeta</span> (<span class="hljs-params">name</span>) </span>{
-  <span class="pl-k">return</span> $(<span class="pl-s">&apos;meta[property=&apos;</span> + <span class="pl-c1">JSON</span>.stringify(name) + <span class="pl-s">&apos;]&apos;</span>).attr(<span class="pl-s">&apos;content&apos;</span>)
+<pre><code class="lang-js"><span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">getMeta</span>(<span class="hljs-params">name</span>) </span>{
+  <span class="pl-k">return</span> $(<span class="pl-s">&quot;meta[property=&quot;</span> + <span class="pl-c1">JSON</span>.stringify(name) + <span class="pl-s">&quot;]&quot;</span>).attr(<span class="pl-s">&quot;content&quot;</span>);
 }
 
-getMeta(<span class="pl-s">&apos;app:user_data:email&apos;</span>)  <span class="pl-c">// =&gt; &apos;john@gmail.com&apos;</span>
+getMeta(<span class="pl-s">&quot;app:user_data:email&quot;</span>); <span class="pl-c">// =&gt; &apos;john@gmail.com&apos;</span>
 </code></pre>
 <h2 id="writing-code">Writing code</h2>
 <p>These are conventions that can be handled by other libraries. For straight jQuery however, here are some guidelines on how to write behaviors.</p>
 <h3 id="consider-using-onmount">Consider using onmount</h3>
 <p><a href="https://github.com/rstacruz/onmount">onmount</a> is a library that allows you to write safe, idempotent, reusable and testable behaviors. It makes your JavaScript code compatible with Turbolinks, and it&#x2019;d allow you to write better unit tests.</p>
-<pre><code class="lang-js">$.onmount(<span class="pl-s">&apos;[data-js-push-button]&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-  $(<span class="pl-k">this</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-    alert(<span class="pl-s">&apos;working...&apos;</span>)
-  })
-})
+<pre><code class="lang-js">$.onmount(<span class="pl-s">&quot;[data-js-push-button]&quot;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-k">this</span>).on(<span class="pl-s">&quot;click&quot;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    alert(<span class="pl-s">&quot;working...&quot;</span>);
+  });
+});
 </code></pre>
 <h2 id="writing-code-without-onmount">Writing code without onmount</h2>
 <p>The <a href="https://github.com/rstacruz/onmount">onmount</a> library solves many pitfalls when writing component behaviors. If you choose not to use it, however, be prepared to deal with those caveats on your own. This next section describes these cases in detail.</p>
 <h3 id="use-document.ready">Use document.ready</h3>
 <p>Add your events and initialization code under the <a href="http://api.jquery.com/ready/">document.ready</a> handler. This assures you that the element you&#x2019;re binding behaviors to already exists. (There is an exception to this&#x2013;see the next section).</p>
-<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
-  $(<span class="pl-s">&apos;[data-js-expanding-menu]&apos;</span>).on(<span class="pl-s">&apos;hover&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-s">&quot;[data-js-expanding-menu]&quot;</span>).on(<span class="pl-s">&quot;hover&quot;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
     <span class="pl-c">// ...</span>
-  })
-})
+  });
+});
 </code></pre>
 <p>If you&#x2019;re using <a href="https://github.com/rstacruz/onmount">onmount</a>, just run <code>onmount()</code> on document.ready as its documentation describes it.</p>
 <h3 id="use-event-delegation">Use event delegation</h3>
 <p>The only time document.ready is not necessary is when attaching event delegations to <code>document</code>. These are typically best done <em>before</em> DOM ready, which would allow them to work even when the entire document hasn&#x2019;t loaded completely.</p>
 <p>This allows you to listen for those events whether the element is on the page or not, unlike doing <code>$(&apos;[data-js-menu]&apos;).on(...)</code> which needs to be done when the element is on the page.</p>
-<pre><code class="lang-js">$(<span class="pl-c1">document</span>).on(<span class="pl-s">&apos;click&apos;</span>, <span class="pl-s">&apos;[data-js-menu]&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+<pre><code class="lang-js">$(<span class="pl-c1">document</span>).on(<span class="pl-s">&quot;click&quot;</span>, <span class="pl-s">&quot;[data-js-menu]&quot;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
   <span class="pl-c">// ...</span>
-})
+});
 </code></pre>
 <p>However, this technique comes at a runtime performance cost. If you bind events for <code>click</code> for 50 components, every click on the page will check for 50 possible event handlers. Instead, consider using <a href="https://github.com/rstacruz/onmount">onmount</a> and bind your events directly to elements as needed.</p>
 <p>Also see <a href="extras.html#event-delegation">extras</a> for more info on event delegation.</p>
 <h3 id="use-each()-when-needed">Use each() when needed</h3>
 <p>When your behavior needs to either initialize first and/or keep a state, consider using <a href="http://api.jquery.com/jQuery.each/">jQuery.each</a>. See <a href="extras.html#example-of-each">extras</a> for a more detailed example.</p>
-<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
-  $(<span class="pl-s">&apos;[data-js-expanding-menu]&apos;</span>).each(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
-    <span class="pl-k">var</span> $menu = $(<span class="pl-k">this</span>)
-    <span class="pl-k">var</span> state = {}
+<pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  $(<span class="pl-s">&quot;[data-js-expanding-menu]&quot;</span>).each(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">var</span> $menu = $(<span class="pl-k">this</span>);
+    <span class="pl-k">var</span> state = {};
 
     <span class="pl-c">// - do some initialization code on $menu</span>
     <span class="pl-c">// - bind events to $menu</span>
     <span class="pl-c">// - use `state` to manage state</span>
-  })
-})
+  });
+});
 </code></pre>
 <p>If you are using <a href="https://github.com/rstacruz/onmount">onmount</a>, this is not necessary.</p>
 <h3 id="avoid-side-effects">Avoid side effects</h3>
 <p>Make sure that each of your JavaScript files will not throw errors or have side effects when the element is not present on the page.</p>
 <pre><code class="lang-js">$(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="pl-k">var</span> $nav = $(<span class="pl-s">&quot;[data-js-hiding-nav]&quot;</span>)
+  <span class="pl-k">var</span> $nav = $(<span class="pl-s">&quot;[data-js-hiding-nav]&quot;</span>);
 
   <span class="pl-c">// Don&apos;t bind the `scroll` event handler if the element isn&apos;t present.</span>
   <span class="pl-c">// This will avoid making the page sluggish unnecessarily. This also</span>
   <span class="pl-c">// avoids the error that $nav[0] will be undefined.</span>
-  <span class="pl-k">if</span> (!$nav.length) <span class="pl-k">return</span>
+  <span class="pl-k">if</span> (!$nav.length) <span class="pl-k">return</span>;
 
-  $(<span class="pl-s">&apos;html, body&apos;</span>).on(<span class="pl-s">&apos;scroll&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="pl-k">if</span> ($nav[<span class="hljs-number">0</span>].disabled) <span class="pl-k">return</span>
-    <span class="pl-k">var</span> isScrolled = $(<span class="pl-c1">window</span>).scrollTop() &gt; $nav.height()
-    $nav.toggleClass(<span class="pl-s">&apos;-hidden&apos;</span>, !isScrolled)
-  })
-})
+  $(<span class="pl-s">&quot;html, body&quot;</span>).on(<span class="pl-s">&quot;scroll&quot;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">if</span> ($nav[<span class="hljs-number">0</span>].disabled) <span class="pl-k">return</span>;
+    <span class="pl-k">var</span> isScrolled = $(<span class="pl-c1">window</span>).scrollTop() &gt; $nav.height();
+    $nav.toggleClass(<span class="pl-s">&quot;-hidden&quot;</span>, !isScrolled);
+  });
+});
 </code></pre>
 <p>If you&#x2019;re using <a href="https://github.com/rstacruz/onmount">onmount</a>, things like the <code>$nav.length</code> check is not necessary.</p>
 <h3 id="dynamic-content">Dynamic content</h3>
@@ -254,41 +263,41 @@ getMeta(<span class="pl-s">&apos;app:user_data:email&apos;</span>)  <span class=
 </ul>
 <p>If you&#x2019;re not using <a href="https://github.com/rstacruz/onmount">onmount</a> or event delegation, you can wrap your initialization code in a function. Run that function on document.ready and when the DOM changes (eg, <code>show.bs.modal</code> in the case of Bootstrap modal dialogs).</p>
 <p>Since your initializer may be called multiple times in a page, you will need to make them <a href="https://en.wikipedia.org/wiki/Idempotent">idempotent</a> by bypassing elements that it has already been applied to. This can be done with an <a href="http://en.wikipedia.org/wiki/Include_guard">include guard</a> pattern.</p>
-<pre><code class="lang-js"><span class="pl-k">void</span> (<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
-<span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">init</span>(<span class="hljs-params"></span>) </span>{
-  $(<span class="pl-s">&apos;[data-js-key-value-pair]&apos;</span>).each(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="pl-k">var</span> $parent = $(<span class="pl-k">this</span>)
+<pre><code class="lang-js"><span class="pl-k">void</span> (<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">init</span>(<span class="hljs-params"></span>) </span>{
+    $(<span class="pl-s">&quot;[data-js-key-value-pair]&quot;</span>).each(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="pl-k">var</span> $parent = $(<span class="pl-k">this</span>);
 
-    <span class="pl-c">// an include guard to keep it idempotent</span>
-    <span class="pl-k">if</span> ($parent.data(<span class="pl-s">&apos;key-value-pair-loaded&apos;</span>)) <span class="pl-k">return</span>
-    $parent.data(<span class="pl-s">&apos;key-value-pair-loaded&apos;</span>, <span class="pl-c1">true</span>)
+      <span class="pl-c">// an include guard to keep it idempotent</span>
+      <span class="pl-k">if</span> ($parent.data(<span class="pl-s">&quot;key-value-pair-loaded&quot;</span>)) <span class="pl-k">return</span>;
+      $parent.data(<span class="pl-s">&quot;key-value-pair-loaded&quot;</span>, <span class="pl-c1">true</span>);
 
-    <span class="pl-c">// init code here</span>
-  })
-}
+      <span class="pl-c">// init code here</span>
+    });
+  }
 
-$(init)
-$(<span class="pl-c1">document</span>).on(<span class="pl-s">&apos;show.bs.modal&apos;</span>, init)
-})()
+  $(init);
+  $(<span class="pl-c1">document</span>).on(<span class="pl-s">&quot;show.bs.modal&quot;</span>, init);
+})();
 </code></pre>
 <p>If you&#x2019;re using <a href="https://github.com/rstacruz/onmount">onmount</a>, simply bind <code>onmount()</code> to these events (such as <code>show.bs.modal</code>). Idempotency will be taken care of for you.</p>
 <h2 id="namespacing">Namespacing</h2>
 <h3 id="keep-the-global-namespace-clean">Keep the global namespace clean</h3>
 <p>Place your publically-accessible classes and functions in an object like <code>App</code>.</p>
-<pre><code class="lang-js"><span class="pl-k">if</span> (!<span class="pl-c1">window</span>.App) <span class="pl-c1">window</span>.App = {}
+<pre><code class="lang-js"><span class="pl-k">if</span> (!<span class="pl-c1">window</span>.App) <span class="pl-c1">window</span>.App = {};
 
-App.Editor = <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+App.Editor = <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
   <span class="pl-c">// ...</span>
-}
+};
 </code></pre>
 <h3 id="organize-your-helpers">Organize your helpers</h3>
 <p>If there are functions that will be reusable across multiple behaviors, put them in a namespace. Place these files in <code>helpers/</code>.</p>
 <pre><code class="lang-js"><span class="pl-c">/* helpers/format_error.js */</span>
-<span class="pl-k">if</span> (!<span class="pl-c1">window</span>.Helpers) <span class="pl-c1">window</span>.Helpers = {}
+<span class="pl-k">if</span> (!<span class="pl-c1">window</span>.Helpers) <span class="pl-c1">window</span>.Helpers = {};
 
 Helpers.formatError = <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params">err</span>) </span>{
-  <span class="pl-k">return</span> <span class="pl-s">&quot;&quot;</span> + err.project_id + <span class="pl-s">&quot; error: &quot;</span> + err.message
-}
+  <span class="pl-k">return</span> <span class="pl-s">&quot;&quot;</span> + err.project_id + <span class="pl-s">&quot; error: &quot;</span> + err.message;
+};
 </code></pre>
 <h2 id="third-party-libraries">Third party libraries</h2>
 <p>If you want to integrate 3rd-party scripts into your app, consider them as component behaviors as well. For instance, you can integrate <a href="https://github.com/select2/select2">select2.js</a> by affecting only <code>.js-select2</code> classes.</p>
@@ -301,13 +310,13 @@ Helpers.formatError = <span class="hljs-function"><span class="pl-k">function</s
 </code></pre>
 <pre><code class="lang-js"><span class="pl-c">// select2.js -- affects `[data-js-select2]`</span>
 $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-  $(<span class="pl-s">&quot;[data-js-select2]&quot;</span>).select2()
-})
+  $(<span class="pl-s">&quot;[data-js-select2]&quot;</span>).select2();
+});
 </code></pre>
 <pre><code class="lang-js"><span class="pl-c">// wow.js -- affects `.wow`</span>
 $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="pl-k">new</span> WOW().init()
-})
+  <span class="pl-k">new</span> WOW().init();
+});
 </code></pre>
 <h3 id="separate-your-vendor-libs">Separate your vendor libs</h3>
 <p>Keep your 3rd-party libraries in something like <code>vendor.js</code>.</p>
@@ -325,7 +334,7 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 <h3 id="load-3rd-party-resources-asynchronously">Load 3rd-party resources asynchronously</h3>
 <p>For third-party resources that are loaded externally, consider loading them with an asynchronous loading mechanism such as <a href="https://github.com/rstacruz/scriptjs/">script.js</a>.</p>
 <p>Some 3rd party libraries are loaded via <code>&lt;script&gt;</code> tags, such as Google Maps&#x2019;s API. These vendors typically expect you to embed them like so:</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="pl-s">&apos;//maps.google.com/maps/api/js?v=3.1.3&amp;amp;libraries=geometry&apos;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="pl-s">&quot;//maps.google.com/maps/api/js?v=3.1.3&amp;amp;libraries=geometry&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
 <pre><code class="lang-js">$.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
   Gmaps.buildMap({ ... })
@@ -333,14 +342,14 @@ $(<span class="hljs-function"><span class="pl-k">function</span> (<span class="h
 </code></pre>
 <p>If your website doesn&#x2019;t use them everywhere, it&#x2019;d be wasteful to include them on every page. You can selectively include them only on pages that need them, but that would hamper reusability: if you want to reuse the <code>.map-box</code> component in another page, you&#x2019;ll need to re-include the script in that other page as well.</p>
 <p>Instead, consider using <a href="https://github.com/rstacruz/scriptjs/">script.js</a> wrapped in a helper function to load them on an as-needed basis.</p>
-<pre><code class="lang-js">Helpers.useGoogleMaps = <span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">useGoogleMaps</span> (<span class="hljs-params">fn</span>) </span>{
-  <span class="pl-k">var</span> url = <span class="pl-s">&apos;https://maps.google.com/maps/api/js?v=3.1.3&amp;libraries=geometry&apos;</span>
+<pre><code class="lang-js">Helpers.useGoogleMaps = <span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">useGoogleMaps</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="pl-k">var</span> url = <span class="pl-s">&quot;https://maps.google.com/maps/api/js?v=3.1.3&amp;libraries=geometry&quot;</span>;
 
   $script(url, <span class="hljs-function"><span class="pl-k">function</span> (<span class="hljs-params"></span>) </span>{
     <span class="pl-c">// pass the global `Gmaps` variable to the callback function.</span>
-    fn(<span class="pl-c1">window</span>.Gmaps)
-  })
-}
+    fn(<span class="pl-c1">window</span>.Gmaps);
+  });
+};
 </code></pre>
 <p>This <code>useGoogleMaps</code> helper can be used like so:</p>
 <pre><code class="lang-js"><span class="pl-k">var</span> useGoogleMaps = Helpers.useGoogleMaps
@@ -359,26 +368,28 @@ $.onmount(<span class="pl-s">&apos;.map-box&apos;</span>, <span class="hljs-func
 <span class="pl-c">/*= require_tree ./initializers
 </span></span></code></pre>
 <p><strong><a href="http://browserify.org/">Browserify</a>:</strong> you can use <a href="https://www.npmjs.com/package/require-globify">require-globify</a>.</p>
-<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, { mode: <span class="pl-s">&apos;expand&apos;</span> })
-<span class="pl-c1">require</span>(<span class="pl-s">&apos;./initializers/**/*.js&apos;</span>, { mode: <span class="pl-s">&apos;expand&apos;</span> })
+<pre><code class="lang-js"><span class="pl-c1">require</span>(<span class="pl-s">&quot;./behaviors/**/*.js&quot;</span>, { mode: <span class="pl-s">&quot;expand&quot;</span> });
+<span class="pl-c1">require</span>(<span class="pl-s">&quot;./initializers/**/*.js&quot;</span>, { mode: <span class="pl-s">&quot;expand&quot;</span> });
 </code></pre>
 <p><strong><a href="https://webpack.github.io/">Webpack</a>:</strong> you can use <code>require.context</code> to load multiple CSS files. See <a href="http://stackoverflow.com/a/30652110/873870">this StackOverflow answer</a> for details.</p>
 <pre><code class="lang-js"><span class="pl-c">// http://stackoverflow.com/a/30652110/873870</span>
-<span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">requireAll</span> (<span class="hljs-params">r</span>) </span>{ r.keys().forEach(r) }
+<span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">requireAll</span>(<span class="hljs-params">r</span>) </span>{
+  r.keys().forEach(r);
+}
 
-requireAll(<span class="pl-c1">require</span>.context(<span class="pl-s">&apos;./behaviors/&apos;</span>, <span class="pl-c1">true</span>, <span class="hljs-regexp">/\.js$/</span>))
-requireAll(<span class="pl-c1">require</span>.context(<span class="pl-s">&apos;./initializers/&apos;</span>, <span class="pl-c1">true</span>, <span class="hljs-regexp">/\.js$/</span>))
+requireAll(<span class="pl-c1">require</span>.context(<span class="pl-s">&quot;./behaviors/&quot;</span>, <span class="pl-c1">true</span>, <span class="hljs-regexp">/\.js$/</span>));
+requireAll(<span class="pl-c1">require</span>.context(<span class="pl-s">&quot;./initializers/&quot;</span>, <span class="pl-c1">true</span>, <span class="hljs-regexp">/\.js$/</span>));
 </code></pre>
 <p><strong><a href="http://brunch.io/">Brunch</a>:</strong> you can use <a href="https://www.npmjs.com/package/glob-brunch">glob-brunch</a>.</p>
-<pre><code class="lang-js">glob(<span class="pl-s">&apos;./behaviors/**/*.js&apos;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>))
-glob(<span class="pl-s">&apos;./initializers/**/*.js&apos;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>))
+<pre><code class="lang-js">glob(<span class="pl-s">&quot;./behaviors/**/*.js&quot;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>));
+glob(<span class="pl-s">&quot;./initializers/**/*.js&quot;</span>, (e, files) =&gt; files.forEach(<span class="pl-c1">require</span>));
 
 <span class="pl-c">/* brunch-config.js */</span>
-  plugins: {
-    glob: {
-      appDir: <span class="pl-s">&apos;...&apos;</span>
-    }
+plugins: {
+  glob: {
+    appDir: <span class="pl-s">&quot;...&quot;</span>;
   }
+}
 </code></pre>
 <h2 id="conclusion">Conclusion</h2>
 <p>This document is a result of my own trial-and-error across many projects, finding out what patterns are worth adhering to on the next project.</p>
@@ -387,7 +398,7 @@ glob(<span class="pl-s">&apos;./initializers/**/*.js&apos;</span>, (e, files) =&
 <p>As with every other guideline document out there, try out and find out what works for you and what doesn&#x2019;t, and adapt accordingly.</p>
 <h2 id="further-reading">Further reading</h2>
 <ul>
-<li><a href="http://rscss.io">rscss.io</a> - reasonable system for CSS stylesheet structure</li>
+<li><a href="https://rstacruz.github.io/rscss/">rscss</a> - reasonable system for CSS stylesheet structure</li>
 <li><a href="https://github.com/rstacruz/onmount">onmount</a> - for safe, idempotent JavaScript behaviors and easy Turbolinks support</li>
 <li><a href="https://github.com/rstacruz/scriptjs/">script.js</a> - for loading external scripts</li>
 </ul>
